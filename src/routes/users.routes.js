@@ -5,6 +5,6 @@ import {
 
 const router = new Router();
 
-router.get("/:?id",getUsers);
+router.get("/:?id", getUsers);
 
 export default router;
