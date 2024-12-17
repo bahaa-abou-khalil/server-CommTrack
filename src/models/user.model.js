@@ -56,8 +56,7 @@ const userSchema = new Schema({
             enum:["admin", "team_leader", "team_member"]
         }, 
         slack_workspace: {
-            type: String,
-            required: true
+            type: String
         }, 
         alerts: [alertSchema],
         joined_discussions:[discussionSchema]

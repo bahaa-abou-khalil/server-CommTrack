@@ -1,3 +1,4 @@
+import { create } from "domain";
 import { User } from "../models/user.model.js";
 
 export const getUsers = async (req,res)=>{
@@ -27,4 +28,28 @@ export const getUsers = async (req,res)=>{
         })
     }
 
+}
+
+export const createUser = async (req,res)=>{
+    const {name, email} = req.body;
+    try{
+        if (!name || !email){
+            res.status(500).send({
+                message:"name or email missing"
+            })
+        }
+
+        const user = await User.create({
+            name:name,
+            email:email
+        })
+
+        return res.json(user);
+    }
+    catch(error){
+        console.log(`Error occured: ${error}`);
+        res.status(500).send({
+            message: "Somthing went wrong."
+        })
+    }
 }
