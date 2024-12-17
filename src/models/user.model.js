@@ -3,64 +3,64 @@ import {Schema, model} from "mongoose";
 
 const alertSchema =new Schema({
 
-    "type": {
+    type: {
         type: String,
         enum: ["productivity", "engagement", "behavior"]
     },
-    "title": String, 
-    "description": String, 
-    "reason": String, 
-    "date": {
+    title: String, 
+    description: String, 
+    reason: String, 
+    date: {
         type: Date,
         default:Date.now
     }, 
-    "improvement_tips": [String], 
-    "channel": String
+    improvement_tips: [String], 
+    channel: String
     
 })
 
 const discussionSchema = new Schema({
 
-    "title": String, 
-    "description": String, 
-    "status": {
+    title: String, 
+    description: String, 
+    status: {
         type:String,
         enum:["active","pending"]
     },
-    "date": {
+    date: {
         type:Date,
         default:Date.now
     }, 
-    "channel": String, 
-    "time_limit": Number
+    channel: String, 
+    time_limit: Number
 })
 
 const userSchema = new Schema({
  
-        "name": {
+        name: {
             type: String,
             required: true
         }, 
-        "email": {
+        email: {
             type: String,
             required: true
         },
-        "password": {
+        password: {
             type:String
         }, 
-        "googleID": {
+        googleID: {
             type:String 
         },
-        "role": {
+        role: {
             type:String,
             enum:["admin", "team_leader", "team_member"]
         }, 
-        "slack_workspace": {
+        slack_workspace: {
             type: String,
             required: true
         }, 
-        "alerts": [alertSchema],
-        "joined_discussions":[discussionSchema]
+        alerts: [alertSchema],
+        joined_discussions:[discussionSchema]
 }
 )
 
