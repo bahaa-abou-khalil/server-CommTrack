@@ -1,4 +1,5 @@
 import { WebClient } from "@slack/web-api";
+import { log } from "console";
 import { channel } from "diagnostics_channel";
 import dotenv from "dotenv";
 dotenv.config();
@@ -48,20 +49,22 @@ export const getChannels = async (req,res)=>{
 }
 
 export const redirectToChannel = async (req, res) => {
-    const { channelName } = req.params;
+    const {channelName} = req.params;
 
     try {
-        if (!channelName) {
-            return res.status(500).json({ message: "Channel name is required." });
-        }
+        
+        const workspace = await slackClient.team.info();
+        const workspaceID = workspace.team.id;
+
         const result = await slackClient.conversations.list();
-        const channel = result.channels.find(chanel => chanel.name === channelName);
+        const channel = result.channels.find(channel => channel.name == channelName);
 
         if (!channel) {
         return res.status(500).json({ message: "Channel not found" });
         }
+        
 
-        const slackChannelUrl = `https://app.slack.com/client/${channel.team_id}/${channel.id}`;
+        const slackChannelUrl = `https://app.slack.com/client/${workspaceID}/${channel.id}`;
         res.redirect(slackChannelUrl);
 
     } catch (error) {
