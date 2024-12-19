@@ -1,5 +1,4 @@
 import {Schema, model} from "mongoose";
-import { unique } from "next/dist/build/utils";
 
 
 const alertSchema =new Schema({
@@ -49,7 +48,7 @@ const userSchema = new Schema({
         email: {
             type: String,
             required: true,
-            unique:true
+            unique : true
         },
         password: {
             type:String

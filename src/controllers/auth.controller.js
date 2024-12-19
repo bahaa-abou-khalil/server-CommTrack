@@ -57,12 +57,12 @@ export const signIn = async (req, res) => {
         });
 
         if (!user) {
-        return res.status(404).send({
-            message: "Invalid Credentials",
+            return res.status(404).send({
+                message: "Invalid Credentials",
         });
         }
 
-        const check = bcrypt.compare(password, user.password);
+        const check = await bcrypt.compare(password, user.password);
 
         if (!check) {
         return res.status(400).send({
