@@ -14,7 +14,9 @@
   "dependencies": {
     "@slack/web-api": "^7.8.0",
     "bcrypt": "^5.1.1",
+    "deep-email-validator": "^0.1.21",
     "dotenv": "^16.4.7",
+    "email-validator": "^2.0.4",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.0",
