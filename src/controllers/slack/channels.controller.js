@@ -46,3 +46,27 @@ export const getChannels = async (req,res)=>{
         })
     }
 }
+
+export const redirectToChannel = async (req, res) => {
+    const { channelName } = req.params;
+
+    try {
+        if (!channelName) {
+            return res.status(500).json({ message: "Channel name is required." });
+        }
+        const result = await slackClient.conversations.list();
+        const channel = result.channels.find(chanel => chanel.name === channelName);
+
+        if (!channel) {
+        return res.status(500).json({ message: "Channel not found" });
+        }
+
+        const slackChannelUrl = `https://app.slack.com/client/${channel.team_id}/${channel.id}`;
+        res.redirect(slackChannelUrl);
+
+    } catch (error) {
+        console.error(`Error redirecting to channel (${channelName}): ${error.message}`);
+        res.status(500).json({ message: "Error redirecting to Slack channel" });
+    }
+};
+
