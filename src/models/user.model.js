@@ -37,7 +37,11 @@ const discussionSchema = new Schema({
 
 const userSchema = new Schema({
  
-        name: {
+        firstName: {
+            type: String,
+            required: true
+        }, 
+        lastName: {
             type: String,
             required: true
         }, 

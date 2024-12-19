@@ -3,6 +3,7 @@ import connectDatabase from "./db/connection.js";
 import userRoutes from "./routes/users.routes.js";
 import messageRoutes from "./routes/slack/messages.routes.js";
 import channelRoutes from "./routes/slack/channels.routes.js";
+import authRoutes from "./routes/auth.routes.js";
 
 
 const app =express();
@@ -17,3 +18,5 @@ app.use("/users", userRoutes);
 
 app.use("/slack/message",messageRoutes);
 app.use("/slack/channel",channelRoutes);
+
+app.use("/auth", authRoutes)
