@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
     getMessages
-} from "../controllers/slack/messages.controller.js"
+} from "../../controllers/slack/messages.controller.js"
 
 const router = new Router();
 
