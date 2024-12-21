@@ -1,11 +1,11 @@
 import { Router } from "express";
-import passport, { authenticate} from "passport"
 import {
-    googleAuthentication
+    googleAuthentication,
+    authenticationInfo
 } from "../controllers/googleAuth.js"
 
 const router = new Router();
 
-app.get("/",)
+router.get("/",googleAuthentication,authenticationInfo)
 
 export default router;
