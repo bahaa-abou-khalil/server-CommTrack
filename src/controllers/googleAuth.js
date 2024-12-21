@@ -1,6 +1,7 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { User } from '../models/user.model';
+import passport, { authenticate} from "passport"
 
 export const googleAuthentication = () => {
     passport.use(
@@ -40,4 +41,8 @@ export const googleAuthentication = () => {
     }
     });
 
+}
+
+export const authenticationInfo  = ()=>{
+    authenticate('google',{scope: ['email']})
 }
