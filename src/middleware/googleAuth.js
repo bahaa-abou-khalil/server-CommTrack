@@ -10,16 +10,16 @@ passport.use(
             callbackURL: "http://localhost:8080/google/callback",
         },
         async (accessToken, refreshToken, profile, done) => {
-            console.log("Access Token:", accessToken);
-            console.log("Profile:", profile);
+            const { givenName, familyName } = profile.name;
+
             try {
                 let user = await User.findOne({ googleID: profile.id });
                 if (!user) {
                     user = await User.create({
-                        
+                        firstName: givenName,
+                        lastName: familyName,
                         googleID: profile.id,
-                        email: profile.emails[0]?.value,
-                        name: profile.displayName
+                        email: profile.emails[0]?.value
                     });
                 }
                 return done(null, user);
