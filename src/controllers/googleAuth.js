@@ -8,20 +8,17 @@ export const googleAuthentication = () => {
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: "https://localhost:8080/google/callback",
+            callbackURL: "http://localhost:8080/google/callback",
             passReqToCallback: true // check
         },
         async (request, accessToken, refreshToken, profile, done) => {
-            try {
-            User.findOrCreate({ googleID: profile.id }, (error, user)=>{
+
+            // User.findOrCreate({ googleID: profile.id }, (error, user)=>{
+            
                 return done(error,profile);
-            });
+            // }
+       
 
-
-
-            } catch (error) {
-            return done(error, null);
-            }
         }
         )
     );
