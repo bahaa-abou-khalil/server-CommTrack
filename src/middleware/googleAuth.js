@@ -2,7 +2,6 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { User } from '../models/user.model.js';
 import passport from "passport"
 
-export const googleAuthentication = () => {
     passport.use(
         new GoogleStrategy(
         {
@@ -15,7 +14,7 @@ export const googleAuthentication = () => {
 
             // User.findOrCreate({ googleID: profile.id }, (error, user)=>{
             
-                return done(error,profile);
+                return done(null,profile);
             // }
        
 
@@ -28,18 +27,13 @@ export const googleAuthentication = () => {
     });
 
     // could be like serialization
-    passport.deserializeUser(async (id, done) => {
-    try {
-        const user = await User.findById(id);
+    passport.deserializeUser((user, done)=> {
+    // try {
+        // const user = await User.findById(id);
         done(null, user);
-    } catch (error) {
-        done(error, null);
-    }
-    });
+    // } catch (error) {
 
-}
 
-export const authenticationInfo  = ()=>{
-    passport.authenticate('google',{scope: ['email']})
-}
+})
 
+export const authenticateGoogle = passport.authenticate('google', { scope: ['email'] });
