@@ -6,7 +6,7 @@ import passwordValidator from "password-validator";
 
 export const signUp = async (req, res) => {
     const { fName, lName, email, password } = req.body;
-  
+    
     try {
       if (!fName || !lName || !email || !password) {
         return res.status(500).send({
