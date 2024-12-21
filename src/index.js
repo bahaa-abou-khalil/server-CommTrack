@@ -20,6 +20,6 @@ app.use("/users", userRoutes);
 app.use("/slack/message",messageRoutes);
 app.use("/slack/channel",channelRoutes);
 
-app.use("/googleAuth", googleAuthRoutes)
+app.use("/", googleAuthRoutes)
 
 app.use("/auth", authRoutes)
