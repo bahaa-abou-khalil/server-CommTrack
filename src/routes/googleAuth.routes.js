@@ -2,23 +2,16 @@ import { Router } from "express";
 import passport from "passport";
 
 import "../middleware/googleAuth.js";
-import { authenticateGoogle } from "../middleware/googleAuth.js";
+import { 
+    authenticateGoogle, redirectAuth, callbackSuccess , callbackFailure
+    } from "../middleware/googleAuth.js";
 const router = new Router();
 
 router.get("/",authenticateGoogle)
-router.get( '/google/callback',
-    passport.authenticate( 'google', {
-        successRedirect: '/callback/success',
-        failureRedirect: '/callback/failure'
-}));
+router.get( '/google/callback', redirectAuth);
 
-router.get('/callback/success' , (req , res) => {
-    if(!req.user)
-        res.redirect('/callback/failure');
-    res.send("Welcome " + req.user.email);
-});
+router.get('/callback/success' , callbackSuccess);
 
-router.get('/callback/failure' , (req , res) => {
-    res.send("Error");
-})
+router.get('/callback/failure' , callbackFailure);
+
 export default router;

@@ -45,3 +45,19 @@ passport.deserializeUser(async (id, done) => {
 });
 
 export const authenticateGoogle = passport.authenticate('google', { scope: ['email','profile'] });
+
+export const redirectAuth = 
+    passport.authenticate( 'google', {
+        successRedirect: '/callback/success',
+        failureRedirect: '/callback/failure'
+    })
+
+export const callbackSuccess = (req , res) => {
+    if(!req.user)
+        res.redirect('/callback/failure');
+    res.send("Welcome " + req.user.email);
+}
+
+export const callbackFailure = (req , res) => {
+    res.send("Error");
+}
