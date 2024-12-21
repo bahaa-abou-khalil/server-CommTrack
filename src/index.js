@@ -4,7 +4,7 @@ import userRoutes from "./routes/users.routes.js";
 import messageRoutes from "./routes/slack/messages.routes.js";
 import channelRoutes from "./routes/slack/channels.routes.js";
 import authRoutes from "./routes/auth.routes.js";
-import googleOauthRoutes from "./routes/googleOauth.routes.js";
+import googleAuthRoutes from "./routes/googleAuth.routes.js";
 
 
 const app =express();
@@ -20,6 +20,6 @@ app.use("/users", userRoutes);
 app.use("/slack/message",messageRoutes);
 app.use("/slack/channel",channelRoutes);
 
-app.use("/googleOauth", googleOauthRoutes)
+app.use("/googleAuth", googleAuthRoutes)
 
 app.use("/auth", authRoutes)
