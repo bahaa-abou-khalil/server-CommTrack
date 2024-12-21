@@ -5,9 +5,11 @@ import "../middleware/googleAuth.js";
 import { 
     authenticateGoogle, redirectAuth, callbackSuccess , callbackFailure
     } from "../middleware/googleAuth.js";
+
 const router = new Router();
 
-router.get("/",authenticateGoogle)
+router.get("/",authenticateGoogle);
+
 router.get( '/google/callback', redirectAuth);
 
 router.get('/callback/success' , callbackSuccess);

@@ -55,7 +55,7 @@ export const redirectAuth =
 export const callbackSuccess = (req , res) => {
     if(!req.user)
         res.redirect('/callback/failure');
-    res.send("Welcome " + req.user.email);
+    res.send("Welcome " + req.user.firstName);
 }
 
 export const callbackFailure = (req , res) => {
