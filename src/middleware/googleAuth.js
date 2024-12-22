@@ -8,27 +8,38 @@ passport.use(
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             callbackURL: "http://localhost:8080/google/callback",
+            accessType: 'offline',
+            prompt: 'consent'
         },
         async (accessToken, refreshToken, profile, done) => {
             const { givenName, familyName } = profile.name;
 
             try {
                 let user = await User.findOne({ googleID: profile.id });
-                
+        
                 if (!user) {
                     user = await User.create({
                         firstName: givenName,
                         lastName: familyName,
                         googleID: profile.id,
-                        email: profile.emails[0]?.value
+                        email: profile.emails[0]?.value,
+                        tokens: {
+                            accessToken,
+                            refreshToken,
+                        },
                     });
+                } else {
+                    user.tokens = { accessToken, refreshToken };
+                    await user.save();
                 }
+        
                 return done(null, user);
             } catch (error) {
                 console.error("Error in Google Strategy:", error);
                 return done(error, null);
             }
         }
+        
     )
 );
 
