@@ -56,6 +56,14 @@ const userSchema = new Schema({
         googleID: {
             type:String 
         },
+        tokens: {
+            accessToken: {
+                type: String,
+            },
+            refreshToken: {
+                type: String,
+            },
+        },
         role: {
             type:String,
             enum:["admin", "team_leader", "team_member"]
