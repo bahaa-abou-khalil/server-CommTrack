@@ -73,3 +73,13 @@ export const callbackSuccess = (req , res) => {
 export const callbackFailure = (req , res) => {
     res.send("Error");
 }
+
+export const sessionChecker = (req, res, next) => {
+    console.log(req.sessionID)
+    if (req.sessionID) {
+      return next();
+    } else {
+      return res.status(401).send('Unauthorized');
+    }
+  };
+  

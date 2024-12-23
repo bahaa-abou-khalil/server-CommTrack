@@ -11,7 +11,11 @@ import passport from "passport";
 
 const app =express();
 
-app.use(session({secret: process.env.SESSION_SECRET}))
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+
+}))
+
 app.use(passport.initialize());
 app.use(passport.session());
 
