@@ -5,6 +5,6 @@ import {
 
 const router = new Router();
 
-router.get("/install", installSlack);
+router.get("/", installSlack);
 
 export default router;

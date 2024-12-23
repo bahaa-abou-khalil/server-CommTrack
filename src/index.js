@@ -3,6 +3,7 @@ import connectDatabase from "./db/connection.js";
 import userRoutes from "./routes/users.routes.js";
 import messageRoutes from "./routes/slack/messages.routes.js";
 import channelRoutes from "./routes/slack/channels.routes.js";
+import installRoutes from "./routes/slack/install.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import googleAuthRoutes from "./routes/googleAuth.routes.js";
 
@@ -32,6 +33,7 @@ app.use("/users", userRoutes);
 
 app.use("/slack/message",messageRoutes);
 app.use("/slack/channel",channelRoutes);
+app.use("/slack/install", installRoutes)
 
 app.use("/", googleAuthRoutes)
 
