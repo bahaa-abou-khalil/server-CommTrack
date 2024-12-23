@@ -1,6 +1,7 @@
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { User } from '../models/user.model.js';
 import passport from "passport";
+import jwt from "jsonwebtoken";
 
 passport.use(
     new GoogleStrategy(
@@ -16,24 +17,23 @@ passport.use(
 
             try {
                 let user = await User.findOne({ googleID: profile.id });
-        
+                
                 if (!user) {
                     user = await User.create({
                         firstName: givenName,
                         lastName: familyName,
                         googleID: profile.id,
                         email: profile.emails[0]?.value,
-                        tokens: {
-                            accessToken,
-                            refreshToken,
-                        },
+
                     });
-                } else {
-                    user.tokens = { accessToken, refreshToken };
-                    await user.save();
                 }
-        
+                const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
+
+                user.tokens = {token};
+                await user.save();
+
                 return done(null, user);
+
             } catch (error) {
                 console.error("Error in Google Strategy:", error);
                 return done(error, null);
@@ -42,19 +42,20 @@ passport.use(
         
     )
 );
-
 passport.serializeUser((user, done) => {
     done(null, user.id);
-});
+  });
+  
 
 passport.deserializeUser(async (id, done) => {
-    try {
-        const user = await User.findById(id);
-        done(null, user);
-    } catch (error) {
-        done(error, null);
-    }
+try {
+    const user = await User.findById(id);
+    done(null, user);
+} catch (error) {
+    done(error, null);
+}
 });
+
 
 export const authenticateGoogle = passport.authenticate('google', { scope: ['email','profile'] });
 
@@ -64,22 +65,17 @@ export const redirectAuth =
         failureRedirect: '/callback/failure'
     })
 
-export const callbackSuccess = (req , res) => {
-    if(!req.user)
-        res.redirect('/callback/failure');
-    res.send("Welcome " + req.user.firstName);
-}
+export const callbackSuccess = (req, res) => {
+    if (!req.user) {
+        return res.redirect('/callback/failure');
+    }
+    const token = jwt.sign({ userId: req.user.id }, 'secret');
+    
+
+    res.json({ message: "Welcome " + req.user.firstName, token });
+};
 
 export const callbackFailure = (req , res) => {
     res.send("Error");
 }
 
-export const sessionChecker = (req, res, next) => {
-    console.log(req.sessionID)
-    if (req.sessionID) {
-      return next();
-    } else {
-      return res.status(401).send('Unauthorized');
-    }
-  };
-  

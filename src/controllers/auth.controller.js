@@ -70,7 +70,7 @@ export const signIn = async (req, res) => {
         });
         }
 
-        const token = jwt.sign({ userId: user.id }, "secret");
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
 
         return res.status(200).send({ user, token });
     } catch (error) {

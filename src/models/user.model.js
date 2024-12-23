@@ -59,10 +59,7 @@ const userSchema = new Schema({
         tokens: {
             accessToken: {
                 type: String,
-            },
-            refreshToken: {
-                type: String,
-            },
+            }
         },
         role: {
             type:String,

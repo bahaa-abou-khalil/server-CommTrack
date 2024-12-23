@@ -1,10 +1,12 @@
 import { Router } from "express";
-import passport from "passport";
-
 import "../middleware/googleAuth.js";
 import { 
-    authenticateGoogle, redirectAuth, callbackSuccess , callbackFailure, sessionChecker
+    authenticateGoogle, redirectAuth, callbackSuccess , callbackFailure
     } from "../middleware/googleAuth.js";
+
+import {
+    isLoggedIn
+} from "../middleware/auth.middleware.js";
 
 const router = new Router();
 
@@ -15,10 +17,5 @@ router.get( '/google/callback', redirectAuth);
 router.get('/callback/success' , callbackSuccess);
 
 router.get('/callback/failure' , callbackFailure);
-
-// for testing
-router.get('/authorized', sessionChecker, (req, res) => {
-    res.send(`Welcome, User`);
-    });
 
 export default router;
