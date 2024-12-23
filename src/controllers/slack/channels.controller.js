@@ -1,6 +1,4 @@
 import { WebClient } from "@slack/web-api";
-import { log } from "console";
-import { channel } from "diagnostics_channel";
 import dotenv from "dotenv";
 dotenv.config();
 
