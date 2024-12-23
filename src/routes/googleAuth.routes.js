@@ -1,8 +1,8 @@
 import { Router } from "express";
-import "../middleware/googleAuth.js";
+import "../controllers/googleOauth/passport.js";
 import { 
     authenticateGoogle, redirectAuth, callbackSuccess , callbackFailure
-    } from "../middleware/googleAuth.js";
+    } from "../controllers/googleOauth/googleAuth.controller.js";
 
 import {
     isLoggedIn

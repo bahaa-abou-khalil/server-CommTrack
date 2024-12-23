@@ -1,7 +1,7 @@
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { User } from '../models/user.model.js';
-import passport from "passport";
-import jwt from "jsonwebtoken";
+import { User } from '../../models/user.model.js';
+import passport from 'passport';
+
 
 passport.use(
     new GoogleStrategy(
@@ -55,27 +55,3 @@ try {
     done(error, null);
 }
 });
-
-
-export const authenticateGoogle = passport.authenticate('google', { scope: ['email','profile'] });
-
-export const redirectAuth = 
-    passport.authenticate( 'google', {
-        successRedirect: '/callback/success',
-        failureRedirect: '/callback/failure'
-    })
-
-export const callbackSuccess = (req, res) => {
-    if (!req.user) {
-        return res.redirect('/callback/failure');
-    }
-    const token = jwt.sign({ userId: req.user.id }, 'secret');
-    
-
-    res.json({ message: "Welcome " + req.user.firstName, token });
-};
-
-export const callbackFailure = (req , res) => {
-    res.send("Error");
-}
-
