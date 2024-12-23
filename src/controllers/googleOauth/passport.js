@@ -1,6 +1,7 @@
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { User } from '../../models/user.model.js';
 import passport from 'passport';
+import jwt from "jsonwebtoken";
 
 
 passport.use(

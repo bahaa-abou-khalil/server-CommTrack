@@ -13,7 +13,7 @@ export const callbackSuccess = (req, res) => {
     if (!req.user) {
         return res.redirect('/callback/failure');
     }
-    const token = jwt.sign({ userId: req.user.id }, 'secret');
+    const token = jwt.sign({ userId: req.user.id }, process.env.JWT_SECRET);
     
 
     res.json({ message: "Welcome " + req.user.firstName, token });
