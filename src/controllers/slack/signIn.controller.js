@@ -1,4 +1,5 @@
 import axios from "axios";
+import jwt from "jsonwebtoken";
 
 export const signInWithSlack = (req, res) => {
     const slackAuthURL = `https://slack.com/openid/connect/authorize?client_id=${process.env.SLACK_CLIENT_ID}&scope=openid,email,profile&response_type=code&redirect_uri=${process.env.REDIRECTED_SLACK_SIGNIN}`;
@@ -25,8 +26,7 @@ export const signInCallback = async (req, res) => {
       );
   
       const { access_token, id_token } = tokenResponse.data;
-      console.log(access_token)
-      console.log(id_token)
+      console.log(`access token: ${access_token}`)
       if (!id_token) {
         return res.status(400).send('Failed to retrieve ID token.');
       }
