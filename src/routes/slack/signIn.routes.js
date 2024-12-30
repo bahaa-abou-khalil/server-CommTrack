@@ -1,12 +1,10 @@
 import { Router } from "express";
 import {
-    signInSlack,
-    signInCallback
+    signInWithSlack
 } from "../../controllers/slack/signIn.controller.js"
 
 const router = new Router();
 
-router.get("/", signInSlack);
-router.get("/welcome", signInCallback);
+router.get("/", signInWithSlack);
 
 export default router;
