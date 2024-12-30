@@ -33,10 +33,18 @@ export const signInCallback = async (req, res) => {
   
       const decodedToken = jwt.decode(id_token);
   
-      const { email, name, picture } = decodedToken;
+      const { 
+        email,
+        name, 
+        picture,
+        'https://slack.com/team_id' :team_id,
+        'https://slack.com/user_id' :user_id,
+        given_name,
+        family_name,
+        'https://slack.com/team_name': worskspace } = decodedToken;
   
-      console.log('User info:', { email, name, picture });
-  
+        
+        
       res.send(`Welcome, ${name}!`);
     } catch (error) {
       console.error('Error during Slack sign in:', error.response?.data || error.message);
