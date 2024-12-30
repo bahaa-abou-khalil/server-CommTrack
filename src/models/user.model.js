@@ -45,6 +45,19 @@ const userSchema = new Schema({
             type: String,
             required: true
         }, 
+        fullName: {
+            type: String,
+        },
+        profilePicture: {
+            type: String
+        },
+        slackTeamID: {
+            type: String
+        },
+        slackUserID: {
+            type: String
+        },
+
         email: {
             type: String,
             required: true,
@@ -65,11 +78,11 @@ const userSchema = new Schema({
             type:String,
             enum:["admin", "team_leader", "team_member"]
         }, 
-        slack_workspace: {
+        slackWorkspace: {
             type: String
         }, 
         alerts: [alertSchema],
-        joined_discussions:[discussionSchema]
+        joinedDiscussions:[discussionSchema]
 }
 )
 
