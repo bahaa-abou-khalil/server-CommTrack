@@ -1,5 +1,7 @@
 import axios from "axios";
 import jwt from "jsonwebtoken";
+import { User } from "../../models/user.model";
+
 
 export const signInWithSlack = (req, res) => {
     const slackAuthURL = `https://slack.com/openid/connect/authorize?client_id=${process.env.SLACK_CLIENT_ID}&scope=openid,email,profile&response_type=code&redirect_uri=${process.env.REDIRECTED_SLACK_SIGNIN}`;
@@ -43,7 +45,17 @@ export const signInCallback = async (req, res) => {
         family_name,
         'https://slack.com/team_name': worskspace } = decodedToken;
   
+        const user = await User.create({
+        firstName: given_name,
+        lastName: family_name,
+        email: email,
+        fullName: name,
+        slackTeamID: team_id,
+        slackUserID: user_id,
+        slackWorkspace: worskspace,
+        profilePicture: picture,
         
+    });
         
       res.send(`Welcome, ${name}!`);
     } catch (error) {
