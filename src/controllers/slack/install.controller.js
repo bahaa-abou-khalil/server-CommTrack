@@ -4,6 +4,7 @@ export const installSlack = (req, res) => {
   const slackAuthUrl = `https://slack.com/oauth/v2/authorize?client_id=${process.env.SLACK_CLIENT_ID}&scope=${process.env.SLACK_SCOPES}&redirect_uri=${process.env.SLACK_REDIRECT_URI}`;
   res.redirect(slackAuthUrl);
 };
+
 export const callback = async (req, res) => {
     const code = req.query.code;
     console.log(code)
@@ -22,7 +23,7 @@ export const callback = async (req, res) => {
         });
 
         if (!response.data.ok) {
-            return res.status(400).send(`Error is response: ${response.data.error}`);
+            return res.status(400).send(`Error in response: ${response.data.error}`);
         }
 
         const { access_token, team, authed_user } = response.data;
