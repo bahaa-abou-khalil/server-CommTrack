@@ -9,8 +9,10 @@ import googleAuthRoutes from "./routes/googleAuth.routes.js";
 import signInSlackRoutes from "./routes/slack/signIn.routes.js";
 import session from "express-session";
 import passport from "passport";
+import cors from "cors"
 
 const app =express();
+
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -23,6 +25,8 @@ app.use(passport.session());
 
 
 app.use(express.json());
+
+app.use(cors());
 
 app.listen(8080,async()=>{
     console.log("Server running on port 8080");

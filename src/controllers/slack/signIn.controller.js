@@ -1,6 +1,6 @@
 import axios from "axios";
 import jwt from "jsonwebtoken";
-import { User } from "../../models/user.model";
+import { User } from "../../models/user.model.js";
 
 
 export const signInWithSlack = (req, res) => {
