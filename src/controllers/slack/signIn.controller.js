@@ -59,6 +59,7 @@ export const signInCallback = async (req, res) => {
         slackUserID: slack_user_id,
         slackWorkspace: workspace,
         profilePicture: picture,
+        role: "member"
         });
     }
 
