@@ -1,21 +1,6 @@
 import {Schema, model} from "mongoose";
-
-
-const discussionSchema = new Schema({
-
-    title: String, 
-    description: String, 
-    status: {
-        type:String,
-        enum:["active","pending"]
-    },
-    date: {
-        type:Date,
-        default:Date.now
-    }, 
-    channel: String, 
-    time_limit: Number
-})
+import { alertSchema } from "../schemas/alert.schema.js";
+import { discussionSchema } from "../schemas/discussion.schema.js";
 
 const userSchema = new Schema({
  
