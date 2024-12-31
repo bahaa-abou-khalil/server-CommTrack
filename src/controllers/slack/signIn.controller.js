@@ -10,33 +10,33 @@ export const signInWithSlack = (req, res) => {
   
 export const signInCallback = async (req, res) => {
     const { code } = req.query;
-  
+
     if (!code) {
-      return res.status(400).send('Authorization code is missing.');
+    return res.status(400).send('Authorization code is missing.');
     }
-  
+
     try {
-      const tokenResponse = await axios.post(
+    const tokenResponse = await axios.post(
         'https://slack.com/api/openid.connect.token',
         new URLSearchParams({
-          client_id: process.env.SLACK_CLIENT_ID,
-          client_secret: process.env.SLACK_CLIENT_SECRET,
-          code,
-          redirect_uri: process.env.REDIRECTED_SLACK_SIGNIN,
+        client_id: process.env.SLACK_CLIENT_ID,
+        client_secret: process.env.SLACK_CLIENT_SECRET,
+        code,
+        redirect_uri: process.env.REDIRECTED_SLACK_SIGNIN,
         }).toString(),
         { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
-      );
-  
-      const { access_token, id_token } = tokenResponse.data;
-      // console.log(`Access token: ${access_token}`);
-      
-      if (!id_token) {
+    );
+
+    const { access_token, id_token } = tokenResponse.data;
+    // console.log(`Access token: ${access_token}`);
+    
+    if (!id_token) {
         return res.status(400).send('Failed to retrieve ID token.');
-      }
-  
-      const decodedToken = jwt.decode(id_token);
-  
-      const { 
+    }
+
+    const decodedToken = jwt.decode(id_token);
+
+    const { 
         email,
         name, 
         picture,
@@ -45,37 +45,35 @@ export const signInCallback = async (req, res) => {
         given_name,
         family_name,
         'https://slack.com/team_name': workspace 
-      } = decodedToken;
-  
-      let user = await User.findOne({ slackUserID: slack_user_id });
-  
-      if (!user) {
+    } = decodedToken;
+
+    let user = await User.findOne({ slackUserID: slack_user_id });
+
+    if (!user) {
         user = await User.create({
-          firstName: given_name,
-          lastName: family_name,
-          email: email,
-          fullName: name,
-          slackTeamID: team_id,
-          slackUserID: slack_user_id,
-          slackWorkspace: workspace,
-          profilePicture: picture,
+        firstName: given_name,
+        lastName: family_name,
+        email: email,
+        fullName: name,
+        slackTeamID: team_id,
+        slackUserID: slack_user_id,
+        slackWorkspace: workspace,
+        profilePicture: picture,
         });
-      }
-  
-      const payload = {
+    }
+
+    const payload = {
         userId: user.id,
         email: user.email,
         fullName: user.fullName,
         slackUserID: user.slackUserID,
         slackTeamID: user.slackTeamID,
-      };
+    };
+
+    // i should add expire date
+    const jwtToken = jwt.sign(payload, process.env.JWT_SECRET);
   
-      // i should add expire date
-      const jwtToken = jwt.sign(payload, process.env.JWT_SECRET);
-  
-      res.cookie('jwt', jwtToken)
-  
-      res.send(`Welcome, ${name}!`);
+    res.redirect(`http://localhost:3000/?token=${jwtToken}`);
   
     } catch (error) {
       console.error('Error during Slack sign in:', error.response?.data || error.message);
