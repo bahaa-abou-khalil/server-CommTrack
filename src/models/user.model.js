@@ -76,7 +76,7 @@ const userSchema = new Schema({
         },
         role: {
             type:String,
-            enum:["admin", "team_leader", "team_member"]
+            enum:["admin", "leader", "member"]
         }, 
         slackWorkspace: {
             type: String
