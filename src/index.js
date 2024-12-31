@@ -10,6 +10,8 @@ import signInSlackRoutes from "./routes/slack/signIn.routes.js";
 import session from "express-session";
 import passport from "passport";
 import cors from "cors"
+import cookieParser from "cookie-parser";
+
 
 const app =express();
 
@@ -27,6 +29,7 @@ app.use(passport.session());
 app.use(express.json());
 
 app.use(cors());
+app.use(cookieParser());
 
 app.listen(8080,async()=>{
     console.log("Server running on port 8080");
