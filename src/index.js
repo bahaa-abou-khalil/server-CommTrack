@@ -29,6 +29,7 @@ app.use(passport.session());
 app.use(express.json());
 
 app.use(cors());
+
 app.use(cookieParser());
 
 app.listen(8080,async()=>{

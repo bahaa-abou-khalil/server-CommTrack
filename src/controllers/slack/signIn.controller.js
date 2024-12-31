@@ -28,7 +28,7 @@ export const signInCallback = async (req, res) => {
       );
   
       const { access_token, id_token } = tokenResponse.data;
-      console.log(`Access token: ${access_token}`);
+      // console.log(`Access token: ${access_token}`);
       
       if (!id_token) {
         return res.status(400).send('Failed to retrieve ID token.');
