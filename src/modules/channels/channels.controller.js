@@ -1,6 +1,4 @@
 import { WebClient } from "@slack/web-api";
-import dotenv from "dotenv";
-dotenv.config();
 
 const token = process.env.SLACK_BOT_TOKEN;
 const slackClient = new WebClient(token);

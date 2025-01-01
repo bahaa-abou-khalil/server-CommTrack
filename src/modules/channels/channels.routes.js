@@ -1,14 +1,24 @@
 import { Router } from "express";
+import { AppRouter } from "../../config/AppRouter.js";
 import {
     createChannel,
     getChannels,
     redirectToChannel
-} from "../../controllers/slack/channels.controller.js"
+} from "./channels.controller.js";
 
-const router = new Router();
+import { authMiddleware } from "../../middlewares/auth.middleware.js";
 
-router.post("/", createChannel);
-router.get("/", getChannels);
-router.get("/redirect/:channelName", redirectToChannel);
+
+const channelsRouter = new Router();
+
+channelsRouter.post("/", createChannel);
+channelsRouter.get("/", getChannels);
+channelsRouter.get("/redirect/:channelName", redirectToChannel);
+
+const router = new AppRouter({
+    prefix: "/channels",
+    router: channelsRouter,
+    middlewares: [authMiddleware],
+  });
 
 export default router;

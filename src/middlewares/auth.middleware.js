@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import { User } from "../models/user.model.js";
+import { User } from "../db/models/user.model.js";
 
-export const isLoggedIn = async (req, res, next) => {
+export const authMiddleware = async (req, res, next) => {
     const authHeader = req.headers.authorization;
   
     if (!authHeader) {
