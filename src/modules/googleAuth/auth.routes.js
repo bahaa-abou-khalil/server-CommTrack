@@ -1,21 +1,25 @@
 import { Router } from "express";
-import "../controllers/googleOauth/passport.js";
+import { AppRouter } from "../../config/AppRouter.js";
 import { 
-    authenticateGoogle, redirectAuth, callbackSuccess , callbackFailure
-    } from "../controllers/googleOauth/googleAuth.controller.js";
+    authenticateGoogle, 
+    redirectAuth, 
+    callbackSuccess, 
+    callbackFailure
+    } from "./auth.controller.js";
 
-import {
-    isLoggedIn
-} from "../middleware/auth.middleware.js";
+import "./auth.service.js";
 
-const router = new Router();
+const authRouter = new Router();
 
-router.get("/",authenticateGoogle);
+authRouter.get('/',authenticateGoogle);
+authRouter.get( '/callback', redirectAuth);
+authRouter.get('/callback/success' , callbackSuccess);
+authRouter.get('/callback/failure' , callbackFailure);
 
-router.get( '/google/callback', redirectAuth);
-
-router.get('/callback/success' , callbackSuccess);
-
-router.get('/callback/failure' , callbackFailure);
+const router = new AppRouter({
+    prefix: "/google",
+    router: authRouter,
+    middlewares: [],
+  });
 
 export default router;
