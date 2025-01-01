@@ -1,4 +1,4 @@
-import { User } from "../models/user.model.js";
+import { User } from "../../db/models/user.model.js";
 
 export const getUsers = async (req,res)=>{
     const id= req.params.id;

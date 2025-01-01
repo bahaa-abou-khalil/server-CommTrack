@@ -1,12 +1,20 @@
 import { Router } from "express";
+import { AppRouter } from "../../config/AppRouter.js";
 import {
     createUser,
     getUsers
-} from "../controllers/users.controller.js"
+    } from "./users.controller.js"
+import { adminMiddleware } from "../../middlewares/admin.middleware.js";
 
-const router = new Router();
+const usersRouter = new Router();
 
-router.get("/:id?", getUsers);
-router.post("/",createUser);
+usersRouter.get("/:id?", getUsers);
+usersRouter.post("/",createUser);
+
+const router = new AppRouter({
+    prefix: "/users",
+    router: usersRouter,
+    middlewares: [adminMiddleware],
+  });
 
 export default router;
