@@ -1,12 +1,21 @@
 import { Router } from "express";
+import { AppRouter } from "../../config/AppRouter.js";
 import {
-    installSlack,
-    callback
-} from "../../controllers/slack/install.controller.js"
+        installSlack,
+        callback
+    } from "./install.controller.js"
+import { adminMiddleware } from "../../middlewares/admin.middleware.js";
 
-const router = new Router();
 
-router.get("/", installSlack);
-router.get("/oauth/callback",callback)
+const installRouter = new Router();
+
+installRouter.get("/", installSlack);
+installRouter.get("/callback",callback)
+
+const router = new AppRouter({
+    prefix: "/install",
+    router: installRouter,
+    middlewares: [adminMiddleware],
+  });
 
 export default router;

@@ -2,8 +2,8 @@ import axios from "axios";
 
 export const installSlack = (req, res) => {
     //modify teh scopes
-  const slackAuthUrl = `https://slack.com/oauth/v2/authorize?client_id=${process.env.SLACK_CLIENT_ID}&scope=commands,chat:write&redirect_uri=${process.env.REDIRECTED_SLACK_INSTALL}`;
-  res.redirect(slackAuthUrl);
+    const slackAuthUrl = `https://slack.com/oauth/v2/authorize?client_id=${process.env.SLACK_CLIENT_ID}&scope=commands,chat:write&redirect_uri=${process.env.REDIRECTED_SLACK_INSTALL}`;
+    res.redirect(slackAuthUrl);
 };
 
 export const callback = async (req, res) => {

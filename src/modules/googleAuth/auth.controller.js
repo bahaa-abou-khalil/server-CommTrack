@@ -1,5 +1,6 @@
 import passport from "passport";
 import jwt from "jsonwebtoken";
+import "./auth.service.js";
 
 export const authenticateGoogle = passport.authenticate('google', { scope: ['email','profile'] });
 

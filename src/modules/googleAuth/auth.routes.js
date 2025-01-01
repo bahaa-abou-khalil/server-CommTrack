@@ -7,7 +7,6 @@ import {
     callbackFailure
     } from "./auth.controller.js";
 
-import "./auth.service.js";
 
 const authRouter = new Router();
 
