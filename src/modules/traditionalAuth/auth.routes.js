@@ -1,15 +1,21 @@
 import { Router } from "express";
+import { AppRouter } from "../../config/AppRouter.js";
 import {
   signUp,
   signIn
-} from "../controllers/auth.controller.js";
+} from "./auth.controller.js";
 
 
-const router = new Router();
+const authRouter = new Router();
 
-router.post("/signUp", signUp);
-router.post("/signIn", signIn);
+authRouter.post("/signUp", signUp);
+authRouter.post("/signIn", signIn);
 
 
+const router = new AppRouter({
+    prefix: "/traditionalAuth",
+    router: authRouter,
+    middlewares: [],
+  });
 
 export default router;

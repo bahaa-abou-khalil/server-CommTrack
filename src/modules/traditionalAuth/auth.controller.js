@@ -2,7 +2,7 @@ import { User } from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import emailValidator from 'email-validator';
-import passwordValidator from "password-validator";
+import { validatePassword } from "./auth.service.js";
 
 export const signUp = async (req, res) => {
     const { fName, lName, email, password } = req.body;
@@ -83,12 +83,3 @@ export const signIn = async (req, res) => {
 };  
 
 
-const validatePassword = (password)=>{
-    let schema = new passwordValidator();
-    schema
-    .is().min(6)
-    const error = schema.validate(password, { details: true });
-    const errorMessage = String(error.map(error => error.message));
-    const validPassword = schema.validate(password)
-    return {errorMessage, validPassword}
-}
