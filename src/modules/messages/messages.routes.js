@@ -1,12 +1,20 @@
 import { Router } from "express";
+import { AppRouter } from "../../config/AppRouter.js";
 import {
     getMessages,
     postMessageToChannel
-} from "../../controllers/slack/messages.controller.js"
+    } from "./messages.controller.js"
+import { authMiddleware } from "../../middlewares/auth.middleware.js";
 
-const router = new Router();
+const messagesRouter = new Router();
 
-router.get("/", getMessages);
-router.post("/", postMessageToChannel);
+messagesRouter.get("/", getMessages);
+messagesRouter.post("/", postMessageToChannel);
+
+const router = new AppRouter({
+    prefix: "/messages",
+    router: messagesRouter,
+    middlewares: [authMiddleware],
+  });
 
 export default router;
