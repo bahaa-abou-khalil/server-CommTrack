@@ -1,7 +1,7 @@
 import {Schema, model} from "mongoose";
 
 
-const discussionSchema = new Schema({
+export const discussionSchema = new Schema({
 
     title: String, 
     description: String, 
@@ -17,4 +17,4 @@ const discussionSchema = new Schema({
     time_limit: Number
 })
 
-export const User = model("Discussion", discussionSchema)
+export const Discussion = model("Discussion", discussionSchema)

@@ -1,6 +1,6 @@
 import {Schema, model} from "mongoose";
 
-const alertSchema =new Schema({
+export const alertSchema =new Schema({
 
     type: {
         type: String,
@@ -18,4 +18,4 @@ const alertSchema =new Schema({
     
 })
 
-export const User = model("Alert", alertSchema)
+export const Alert = model("Alert", alertSchema)
