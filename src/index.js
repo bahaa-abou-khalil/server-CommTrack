@@ -1,49 +1,21 @@
 import express from "express";
-import connectDatabase from "./db/connection.js";
-import userRoutes from "./routes/users.routes.js";
-import messageRoutes from "./routes/slack/messages.routes.js";
-import channelRoutes from "./routes/slack/channels.routes.js";
-import installRoutes from "./routes/slack/install.routes.js";
-import authRoutes from "./routes/auth.routes.js";
-import googleAuthRoutes from "./routes/googleAuth.routes.js";
-import signInSlackRoutes from "./routes/slack/signIn.routes.js";
-import session from "express-session";
-import passport from "passport";
-import cors from "cors"
-import cookieParser from "cookie-parser";
+import connectToDatabase from "./db/connection.js";
+import { init, registerRoutes } from "./config/init.js";
+import traditionalAuthRouter from "./modules/traditionalAuth/auth.routes.js";
+import slackAuthRouter from "./modules/slackAuth/auth.routes.js"
+import googleAuthRouter from "./modules/googleAuth/auth.routes.js"
+import channelsRouter from "./modules/channels/channels.routes.js"
+import installRouter from "./modules/install/install.routes.js"
+import messagesRouter from "./modules/messages/messages.routes.js"
 
 
-const app =express();
+const app = express();
 
+init(app);
+registerRoutes(app, traditionalAuthRouter, slackAuthRouter, googleAuthRouter, channelsRouter, installRouter, messagesRouter);
 
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    saveUninitialized: true,
-    resave:true
-}))
+app.listen(process.env.SERVER_PORT, () => {
+  console.log(`Server running on port ${process.env.SERVER_PORT}`);
 
-app.use(passport.initialize());
-app.use(passport.session());
-
-
-app.use(express.json());
-
-app.use(cors());
-
-app.use(cookieParser());
-
-app.listen(8080,async()=>{
-    console.log("Server running on port 8080");
-    await connectDatabase();
-})
-
-app.use("/users", userRoutes);
-
-app.use("/slack/message",messageRoutes);
-app.use("/slack/channel",channelRoutes);
-app.use("/slack/install", installRoutes)
-app.use("/slack/signIn", signInSlackRoutes)
-
-app.use("/", googleAuthRoutes)
-
-app.use("/auth", authRoutes)
+  connectToDatabase();
+});
