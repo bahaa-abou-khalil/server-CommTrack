@@ -16,7 +16,7 @@ authRouter.get('/callback/success' , callbackSuccess);
 authRouter.get('/callback/failure' , callbackFailure);
 
 const router = new AppRouter({
-    prefix: "/google",
+    prefix: "/googleAuth",
     router: authRouter,
     middlewares: [],
   });
