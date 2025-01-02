@@ -26,6 +26,7 @@ export const getAllDiscussions = async (req, res) => {
             if (channelInfo.channel.creator === botUserId) {
             const title = channelInfo.channel.name;
             const description = channelInfo.channel.purpose.value || 'No description available';
+            const channelId = channelInfo.channel.id;
 
             const membersResponse = await slackClient.conversations.members({
                 channel: channelId,
@@ -34,6 +35,7 @@ export const getAllDiscussions = async (req, res) => {
             const users = membersResponse.members || [];
 
             appCreatedChannels.push({
+                channelId,
                 title,
                 description,
                 users,
