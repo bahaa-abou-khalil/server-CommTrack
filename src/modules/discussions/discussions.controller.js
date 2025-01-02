@@ -124,22 +124,14 @@ export const checkDiscussionStatus = async (req, res) => {
 };
 
 export const redirectToDiscussion = async (req, res) => {
-    const {channelName} = req.params;
+    const {channelId} = req.params;
 
     try {
         
         const workspace = await slackClient.team.info();
-        const workspaceID = workspace.team.id;
+        const workspaceID = workspace.team.id;       
 
-        const result = await slackClient.conversations.list();
-        const channel = result.channels.find(channel => channel.name == channelName);
-
-        if (!channel) {
-        return res.status(500).json({ message: "Channel not found" });
-        }
-        
-
-        const slackChannelUrl = `https://app.slack.com/client/${workspaceID}/${channel.id}`;
+        const slackChannelUrl = `https://app.slack.com/client/${workspaceID}/${channelId}`;
         res.redirect(slackChannelUrl);
 
     } catch (error) {

@@ -15,7 +15,7 @@ const discussionsRouter = new Router();
 discussionsRouter.get("/", getAllDiscussions);
 discussionsRouter.post("/", createDiscussion);
 discussionsRouter.get("/status/:channelId", checkDiscussionStatus);
-discussionsRouter.get("/redirect/:channelName", redirectToDiscussion);
+discussionsRouter.get("/redirect/:channelId", redirectToDiscussion);
 
 const router = new AppRouter({
     prefix: "/discussions",
