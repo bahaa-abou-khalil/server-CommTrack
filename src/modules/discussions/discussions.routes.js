@@ -13,6 +13,7 @@ const discussionsRouter = new Router();
 
 discussionsRouter.get("/", getAllDiscussions);
 discussionsRouter.post("/", createDiscussion);
+discussionsRouter.get("/status", checkDiscussionStatus);
 
 const router = new AppRouter({
     prefix: "/discussions",
