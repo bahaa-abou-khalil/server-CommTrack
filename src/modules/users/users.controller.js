@@ -52,3 +52,30 @@ export const createUser = async (req,res)=>{
         })
     }
 }
+
+export const getSlackUsersByIds = async (req, res) => {
+    try {
+      const { userIds } = req.body;
+  
+      if (!userIds || !Array.isArray(userIds)) {
+        return res.status(400).json({ message: "channelId and a list of userIds are required." });
+      }
+    
+      const usersInfo = await Promise.all(
+        userIds.map(async (userId) => {
+          const userInfo = await slackClient.users.info({ user: userId });
+          return {
+            userName: userInfo.user.real_name,
+            userAvatar: userInfo.user.profile.image_192,
+          };
+        })
+      );
+  
+      return res.json({
+        users: usersInfo,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Failed to retrieve users information." });
+    }
+};

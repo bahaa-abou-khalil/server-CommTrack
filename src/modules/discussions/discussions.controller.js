@@ -142,3 +142,4 @@ export const redirectToDiscussion = async (req, res) => {
         res.status(500).json({ message: "Error redirecting to Slack channel" });
     }
 };
+
