@@ -16,7 +16,7 @@ usersRouter.post("/slackUsers",getSlackUsersByIds);
 const router = new AppRouter({
     prefix: "/users",
     router: usersRouter,
-    middlewares: [adminMiddleware],
-  });
+    middlewares: [],
+});
 
 export default router;

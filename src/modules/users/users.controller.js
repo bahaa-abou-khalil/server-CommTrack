@@ -1,4 +1,5 @@
 import { User } from "../../db/models/user.model.js";
+import { slackClient } from "../../index.js";
 
 export const getUsers = async (req,res)=>{
     const id= req.params.id;
