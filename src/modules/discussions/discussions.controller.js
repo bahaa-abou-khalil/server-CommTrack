@@ -20,10 +20,11 @@ export const getAllDiscussions = async (req, res) => {
             channel: channelId,
         });
 
-        console.log(channelInfo.channel.creator)
+        const authResponse = await slackClient.auth.test();
+        const botUserId = authResponse.user_id;
 
         if (channelInfo.ok) {
-            if (channelInfo.channel.creator === "U085AGSSEK1") {
+            if (channelInfo.channel.creator === botUserId) {
             const title = channelInfo.channel.name;
             const description = channelInfo.channel.purpose.value || 'No description available';
 
