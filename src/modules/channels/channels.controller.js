@@ -1,4 +1,4 @@
-import { WebClient } from "@slack/web-api";
+import { slackClient } from "../../index.js";
 
 export const checkChannelStatus = async (req, res) => {
   try {

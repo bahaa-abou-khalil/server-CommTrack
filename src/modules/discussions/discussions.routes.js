@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { AppRouter } from "../../config/AppRouter.js";
 import {
-    getAllDiscussions
+    getAllDiscussions,
+    createDiscussion
 } from "./discussions.controller.js";
 
 // import { authMiddleware } from "../../middlewares/auth.middleware.js";
@@ -10,6 +11,7 @@ import {
 const discussionsRouter = new Router();
 
 discussionsRouter.get("/", getAllDiscussions);
+discussionsRouter.post("/", createDiscussion);
 
 const router = new AppRouter({
     prefix: "/discussions",

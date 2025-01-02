@@ -1,8 +1,7 @@
-import { WebClient } from "@slack/web-api";
+import { slackClient } from "../../index.js";
 
 export const getAllDiscussions = async (req, res) => {
-    const token = process.env.SLACK_BOT_TOKEN;
-    const slackClient = new WebClient(token);
+
     try {
         const response = await slackClient.conversations.list();
 
@@ -52,8 +51,6 @@ export const getAllDiscussions = async (req, res) => {
 };
 
 export const createDiscussion = async (req, res) => {
-    const token = process.env.SLACK_BOT_TOKEN;
-    const slackClient = new WebClient(token);
     try {
       const { name, isPrivate, description } = req.body;
   

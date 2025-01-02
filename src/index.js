@@ -8,11 +8,15 @@ import channelsRouter from "./modules/channels/channels.routes.js"
 import installRouter from "./modules/install/install.routes.js"
 import messagesRouter from "./modules/messages/messages.routes.js"
 import discussionsRouter from "./modules/discussions/discussions.routes.js"
-
+import { WebClient } from "@slack/web-api";
 
 const app = express();
 
 init(app);
+
+const token = process.env.SLACK_BOT_TOKEN;
+export const slackClient = new WebClient(token);
+
 registerRoutes(app, traditionalAuthRouter, slackAuthRouter, 
               googleAuthRouter, channelsRouter, installRouter,
               messagesRouter, discussionsRouter);  
