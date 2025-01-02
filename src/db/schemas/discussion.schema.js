@@ -12,8 +12,7 @@ export const discussionSchema = new Schema({
     date: {
         type:Date,
         default:Date.now
-    }, 
-    channel: String, 
+    },  
     time_limit: Number
 })
 
