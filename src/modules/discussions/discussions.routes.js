@@ -3,7 +3,8 @@ import { AppRouter } from "../../config/AppRouter.js";
 import {
     getAllDiscussions,
     createDiscussion,
-    checkDiscussionStatus
+    checkDiscussionStatus,
+    redirectToDiscussion
 } from "./discussions.controller.js";
 
 // import { authMiddleware } from "../../middlewares/auth.middleware.js";
@@ -13,7 +14,8 @@ const discussionsRouter = new Router();
 
 discussionsRouter.get("/", getAllDiscussions);
 discussionsRouter.post("/", createDiscussion);
-discussionsRouter.get("/status", checkDiscussionStatus);
+discussionsRouter.get("/status/:channelId", checkDiscussionStatus);
+discussionsRouter.get("/redirect/:channelName", redirectToDiscussion);
 
 const router = new AppRouter({
     prefix: "/discussions",
