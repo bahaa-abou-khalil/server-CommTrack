@@ -32,6 +32,42 @@ export const createChannel = async (req, res) => {
   }
 };
 
+export const checkChannelStatus = async (req, res) => {
+  try {
+    const { channelId } = req.params;
+
+    if (!channelId) {
+      return res.status(400).json({ message: "Channel ID is required." });
+    }
+
+    const membersResponse = await slackClient.conversations.members({
+      channel: channelId,
+    });
+
+    const memberCount = membersResponse.members.length;
+
+    let status = "pending";
+    if (memberCount > 1) {
+      status = "active";
+    } else if (memberCount === 0) {
+      status = "closed";
+    }
+
+    return res.json({
+      message: `Channel status: ${status}`,
+      status: status,
+      memberCount: memberCount,
+    });
+  } catch (error) {
+    console.error(`Error checking channel status: ${error.message}`);
+    return res.status(500).json({
+      message: "Failed to check channel status.",
+      error: error,
+    });
+  }
+};
+
+
 export const getChannels = async (req,res)=>{
     try{
         const { channels } = await slackClient.conversations.list();
