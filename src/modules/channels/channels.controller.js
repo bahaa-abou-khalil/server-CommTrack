@@ -5,7 +5,7 @@ const slackClient = new WebClient(token);
 
 export const createChannel = async (req, res) => {
   try {
-    const { name, isPrivate } = req.body;
+    const { name, isPrivate, description } = req.body;
 
     if (!name) {
       return res.status(500).json({ message: "Channel name is required." });
@@ -18,10 +18,17 @@ export const createChannel = async (req, res) => {
 
     const channelId = response.channel.id;
 
+    if (description) {
+      await slackClient.conversations.setPurpose({
+        channel: channelId,
+        purpose: description,
+      });
+    }
+
     return res.json({
       message: "Channel created successfully.",
       channel: response,
-      channelId : channelId
+      channelId: channelId,
     });
   } catch (error) {
     console.error(`Error creating channel: ${error.message}`);
@@ -31,6 +38,7 @@ export const createChannel = async (req, res) => {
     });
   }
 };
+
 
 export const checkChannelStatus = async (req, res) => {
   try {
