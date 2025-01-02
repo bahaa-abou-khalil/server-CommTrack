@@ -9,7 +9,7 @@ import {
 
 const discussionsRouter = new Router();
 
-discussionsRouter.post("/", getAllDiscussions);
+discussionsRouter.get("/", getAllDiscussions);
 
 const router = new AppRouter({
     prefix: "/discussions",

@@ -7,12 +7,15 @@ import googleAuthRouter from "./modules/googleAuth/auth.routes.js"
 import channelsRouter from "./modules/channels/channels.routes.js"
 import installRouter from "./modules/install/install.routes.js"
 import messagesRouter from "./modules/messages/messages.routes.js"
+import discussionsRouter from "./modules/discussions/discussions.routes.js"
 
 
 const app = express();
 
 init(app);
-registerRoutes(app, traditionalAuthRouter, slackAuthRouter, googleAuthRouter, channelsRouter, installRouter, messagesRouter);
+registerRoutes(app, traditionalAuthRouter, slackAuthRouter, 
+              googleAuthRouter, channelsRouter, installRouter,
+              messagesRouter, discussionsRouter);  
 
 app.listen(process.env.SERVER_PORT, () => {
   console.log(`Server running on port ${process.env.SERVER_PORT}`);
