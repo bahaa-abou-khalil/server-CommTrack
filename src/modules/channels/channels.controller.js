@@ -16,9 +16,12 @@ export const createChannel = async (req, res) => {
       is_private: isPrivate || false,
     });
 
+    const channelId = response.channel.id;
+
     return res.json({
       message: "Channel created successfully.",
       channel: response,
+      channelId : channelId
     });
   } catch (error) {
     console.error(`Error creating channel: ${error.message}`);
