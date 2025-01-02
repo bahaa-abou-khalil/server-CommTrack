@@ -1,45 +1,5 @@
 import { WebClient } from "@slack/web-api";
 
-const token = process.env.SLACK_BOT_TOKEN;
-const slackClient = new WebClient(token);
-
-export const createChannel = async (req, res) => {
-  try {
-    const { name, isPrivate, description } = req.body;
-
-    if (!name) {
-      return res.status(500).json({ message: "Channel name is required." });
-    }
-
-    const response = await slackClient.conversations.create({
-      name: name,
-      is_private: isPrivate || false,
-    });
-
-    const channelId = response.channel.id;
-
-    if (description) {
-      await slackClient.conversations.setPurpose({
-        channel: channelId,
-        purpose: description,
-      });
-    }
-
-    return res.json({
-      message: "Channel created successfully.",
-      channel: response,
-      channelId: channelId,
-    });
-  } catch (error) {
-    console.error(`Error creating channel: ${error.message}`);
-    return res.status(500).json({
-      message: "Failed to create channel.",
-      error: error,
-    });
-  }
-};
-
-
 export const checkChannelStatus = async (req, res) => {
   try {
     const { channelId } = req.params;

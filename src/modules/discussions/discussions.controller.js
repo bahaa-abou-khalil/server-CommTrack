@@ -50,3 +50,41 @@ export const getAllDiscussions = async (req, res) => {
         return res.status(500).json({ message: 'Failed to retrieve discussions from Slack: ', error });
     }
 };
+
+export const createDiscussion = async (req, res) => {
+    const token = process.env.SLACK_BOT_TOKEN;
+    const slackClient = new WebClient(token);
+    try {
+      const { name, isPrivate, description } = req.body;
+  
+      if (!name) {
+        return res.status(500).json({ message: "Channel name is required." });
+      }
+  
+      const response = await slackClient.conversations.create({
+        name: name,
+        is_private: isPrivate || false,
+      });
+  
+      const channelId = response.channel.id;
+  
+      if (description) {
+        await slackClient.conversations.setPurpose({
+          channel: channelId,
+          purpose: description,
+        });
+      }
+  
+      return res.json({
+        message: "Channel created successfully.",
+        channel: response,
+        channelId: channelId,
+      });
+    } catch (error) {
+      console.error(`Error creating channel: ${error.message}`);
+      return res.status(500).json({
+        message: "Failed to create channel.",
+        error: error,
+      });
+    }
+};
