@@ -57,7 +57,7 @@ export const getAllDiscussions = async (req, res) => {
 
 export const createDiscussion = async (req, res) => {
     try {
-      const { name, isPrivate, description } = req.body;
+      const { name, isPrivate, description, timeLimit } = req.body;
   
       if (!name) {
         return res.status(500).json({ message: "Channel name is required." });
@@ -76,11 +76,13 @@ export const createDiscussion = async (req, res) => {
           purpose: description,
         });
       }
+
   
       return res.json({
         message: "Channel created successfully.",
         channel: response,
         channelId: channelId,
+        timeLimit: timeLimit
       });
     } catch (error) {
       console.error(`Error creating channel: ${error.message}`);

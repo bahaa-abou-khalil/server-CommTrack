@@ -1,3 +1,5 @@
+import { slackClient } from "../../index.js";
+
 export const formatDate = (timestamp) =>{
     const date = new Date(timestamp * 1000);
     
@@ -13,3 +15,23 @@ export const formatDate = (timestamp) =>{
     return formattedDate;
 }
 
+export const scheduleDiscussion = (minutes) => {
+
+    let endTime = null;
+    if (minutes) {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() + minutes);
+        endTime = now;
+    }
+
+    if (endTime) {
+        schedule.scheduleJob(endTime, async () => {
+            try {
+                await slackClient.conversations.archive({ channel: channelId });
+                console.log(`Channel ${channelId} has been archived.`);
+            } catch (archiveError) {
+                console.error(`Failed to archive channel: ${archiveError.message}`);
+            }
+        });
+    }
+}
