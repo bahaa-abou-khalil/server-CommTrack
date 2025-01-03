@@ -1,5 +1,6 @@
 import { slackClient } from "../../index.js";
 import { formatDate } from "./discussions.service.js";
+import { scheduleDiscussion } from "./discussions.service.js";
 
 export const getAllDiscussions = async (req, res) => {
 
@@ -77,6 +78,7 @@ export const createDiscussion = async (req, res) => {
         });
       }
 
+      scheduleDiscussion(timeLimit)
   
       return res.json({
         message: "Channel created successfully.",
