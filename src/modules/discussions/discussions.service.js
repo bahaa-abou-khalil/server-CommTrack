@@ -16,15 +16,14 @@ export const formatDate = (timestamp) =>{
     return formattedDate;
 }
 
-export const scheduleDiscussion = (minutes, channelId) => {
+export const scheduleDiscussion = (minutes, channelId = null) => {
 
     let endTime = null
     if (minutes) {
-        const now = new Date();
-        const endTimeTimestamp = new Date(now);
-        endTimeTimestamp.setMinutes(endTimeTimestamp.getMinutes() + minutes);
-        const stringEndTime = endTimeTimestamp.toISOString()
-        endTime = new Date(stringEndTime);
+        endTime = new Date();
+        endTime.setTime(endTime.getTime() + (minutes * 60 * 1000));
+        console.log(endTime)
+        
         
     }
 

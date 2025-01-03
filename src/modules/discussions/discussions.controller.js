@@ -64,26 +64,26 @@ export const createDiscussion = async (req, res) => {
         return res.status(500).json({ message: "Channel name is required." });
       }
   
-    //   const response = await slackClient.conversations.create({
-    //     name: name,
-    //     is_private: isPrivate || false,
-    //   });
+      const response = await slackClient.conversations.create({
+        name: name,
+        is_private: isPrivate || false,
+      });
   
-    //   const channelId = response.channel.id;
+      const channelId = response.channel.id;
   
-    //   if (description) {
-    //     await slackClient.conversations.setPurpose({
-    //       channel: channelId,
-    //       purpose: description,
-    //     });
-    //   }
+      if (description) {
+        await slackClient.conversations.setPurpose({
+          channel: channelId,
+          purpose: description,
+        });
+      }
 
-      scheduleDiscussion(timeLimit)
+      scheduleDiscussion(timeLimit, channelId)
   
       return res.json({
         message: "Channel created successfully.",
-        // channel: response,
-        // channelId: channelId,
+        channel: response,
+        channelId: channelId,
         timeLimit: timeLimit
       });
     } catch (error) {
