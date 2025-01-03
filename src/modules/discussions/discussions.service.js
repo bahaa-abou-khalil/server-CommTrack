@@ -16,26 +16,22 @@ export const formatDate = (timestamp) =>{
     return formattedDate;
 }
 
-export const scheduleDiscussion = (minutes,channelId = null) => {
+export const scheduleDiscussion = (minutes, channelId) => {
 
-    let endTime = null;
+    let endTime = null
     if (minutes) {
-        console.log("minutes",minutes)
-        const utcDate = new Date();
-        const offset = 2 * 60;
-        const now = new Date(utcDate.getTime() + offset * 60 * 1000);
-        const dateNow = new Date(now);
-        endTime = dateNow.setMinutes(dateNow.getMinutes() + 1);
-        console.log("endTime1",endTime)
+        const now = new Date();
+        const endTimeTimestamp = new Date(now);
+        endTimeTimestamp.setMinutes(endTimeTimestamp.getMinutes() + minutes);
+        const stringEndTime = endTimeTimestamp.toISOString()
+        endTime = new Date(stringEndTime);
+        
     }
 
     if (endTime) {
-        console.log("endtime",endTime)
-        const date = new Date(Date.now() + 5000);
-        console.log(date) 
-        schedule.scheduleJob(date, () => {
+        schedule.scheduleJob(endTime, async () => {
             try {
-                // await slackClient.conversations.archive({ channel: channelId });
+                await slackClient.conversations.archive({ channel: channelId });
                 console.log(`Channel ${channelId} has been archived.`);
             } catch (archiveError) {
                 console.error(`Failed to archive channel: ${archiveError.message}`);
