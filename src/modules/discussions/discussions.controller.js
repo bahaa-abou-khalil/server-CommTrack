@@ -83,14 +83,23 @@ export const createDiscussion = async (req, res) => {
 
       scheduleDiscussion(timeLimit, channelId)
   
-      console.log("req.userId: ",req.userId)
-      console.log("req.user: ",req.user)
+      const user = await User.findById(req.user._id);
+      if (!user) return res.status(404).json({ error: 'User not found' });
+
+      const newDiscussion = { 
+        title: name, 
+        description: description, 
+        timeLimit: timeLimit};
+
+      user.joinedDiscussions.push(newDiscussion);
+
+      await user.save();
 
       return res.json({
         message: "Channel created successfully.",
         channel: response,
         channelId: channelId,
-        timeLimit: timeLimit
+        discussion: newDiscussion
       });
     } catch (error) {
       console.error(`Error creating channel: ${error.message}`);
