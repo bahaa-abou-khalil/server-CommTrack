@@ -7,7 +7,7 @@ import {
     redirectToDiscussion
 } from "./discussions.controller.js";
 
-// import { authMiddleware } from "../../middlewares/auth.middleware.js";
+import { authMiddleware } from "../../middlewares/auth.middleware.js";
 
 
 const discussionsRouter = new Router();
@@ -20,7 +20,7 @@ discussionsRouter.get("/redirect/:channelId", redirectToDiscussion);
 const router = new AppRouter({
     prefix: "/discussions",
     router: discussionsRouter,
-    middlewares: [],
+    middlewares: [authMiddleware],
   });
 
 export default router;

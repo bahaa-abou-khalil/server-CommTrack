@@ -1,6 +1,7 @@
 import { slackClient } from "../../index.js";
 import { formatDate } from "./discussions.service.js";
 import { scheduleDiscussion } from "./discussions.service.js";
+import { User } from "../../db/models/user.model.js";
 
 export const getAllDiscussions = async (req, res) => {
 
@@ -56,9 +57,11 @@ export const getAllDiscussions = async (req, res) => {
     }
 };
 
+
+
 export const createDiscussion = async (req, res) => {
     try {
-      const { name, isPrivate, description, timeLimit } = req.body;
+      const { name, description, timeLimit } = req.body;
   
       if (!name) {
         return res.status(500).json({ message: "Channel name is required." });
@@ -66,7 +69,7 @@ export const createDiscussion = async (req, res) => {
   
       const response = await slackClient.conversations.create({
         name: name,
-        is_private: isPrivate || false,
+        is_private: false,
       });
   
       const channelId = response.channel.id;
@@ -80,6 +83,9 @@ export const createDiscussion = async (req, res) => {
 
       scheduleDiscussion(timeLimit, channelId)
   
+      console.log("req.userId: ",req.userId)
+      console.log("req.user: ",req.user)
+
       return res.json({
         message: "Channel created successfully.",
         channel: response,
