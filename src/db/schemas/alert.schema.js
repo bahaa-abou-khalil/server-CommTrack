@@ -17,5 +17,3 @@ export const alertSchema =new Schema({
     channel: String
     
 })
-
-export const Alert = model("Alert", alertSchema)

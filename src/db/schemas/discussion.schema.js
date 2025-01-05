@@ -15,5 +15,3 @@ export const discussionSchema = new Schema({
     },  
     timeLimit: Number
 })
-
-export const Discussion = model("Discussion", discussionSchema)
