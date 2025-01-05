@@ -61,14 +61,14 @@ export const getAllDiscussions = async (req, res) => {
 
 export const createDiscussion = async (req, res) => {
     try {
-      const { name, description, timeLimit } = req.body;
+      const { title, description, timeLimit } = req.body;
   
-      if (!name) {
-        return res.status(500).json({ message: "Channel name is required." });
+      if (!title) {
+        return res.status(500).json({ message: "Channel title is required." });
       }
   
       const response = await slackClient.conversations.create({
-        name: name,
+        name: title,
         is_private: false,
       });
   
@@ -87,7 +87,7 @@ export const createDiscussion = async (req, res) => {
       if (!user) return res.status(404).json({ error: 'User not found' });
 
       const newDiscussion = { 
-        title: name, 
+        title: title, 
         description: description, 
         timeLimit: timeLimit};
 
