@@ -16,37 +16,37 @@ export const getAllDiscussions = async (req, res) => {
         const appCreatedChannels = [];
 
         for (const channel of channels) {
-        const channelId = channel.id;
+            const channelId = channel.id;
 
-        const channelInfo = await slackClient.conversations.info({
-            channel: channelId,
-        });
-
-        const authResponse = await slackClient.auth.test();
-        const botUserId = authResponse.user_id;
-
-        if (channelInfo.ok) {
-            if (channelInfo.channel.creator === botUserId) {
-            const title = channelInfo.channel.name;
-            const description = channelInfo.channel.purpose.value || 'No description available';
-            const channelId = channelInfo.channel.id;
-            const createdAtTimestamp = channelInfo.channel.created;
-            const createdAt = formatDate(createdAtTimestamp);
-            const membersResponse = await slackClient.conversations.members({
+            const channelInfo = await slackClient.conversations.info({
                 channel: channelId,
             });
 
-            const users = membersResponse.members || [];
+            const authResponse = await slackClient.auth.test();
+            const botUserId = authResponse.user_id;
 
-            appCreatedChannels.push({
-                channelId,
-                title,
-                description,
-                users,
-                createdAt
-            });
+            if (channelInfo.ok) {
+                if (channelInfo.channel.creator === botUserId) {
+                const title = channelInfo.channel.name;
+                const description = channelInfo.channel.purpose.value || 'No description available';
+                const channelId = channelInfo.channel.id;
+                const createdAtTimestamp = channelInfo.channel.created;
+                const createdAt = formatDate(createdAtTimestamp);
+                const membersResponse = await slackClient.conversations.members({
+                    channel: channelId,
+                });
+
+                const users = membersResponse.members || [];
+
+                appCreatedChannels.push({
+                    channelId,
+                    title,
+                    description,
+                    users,
+                    createdAt
+                });
+                }
             }
-        }
         }
 
         return res.json({ discussions: appCreatedChannels });
@@ -125,9 +125,9 @@ export const checkDiscussionStatus = async (req, res) => {
         const memberCount = membersResponse.members.length;
     
         let status = "pending";
-        if (memberCount > 1) {
+        if (memberCount > 2) {
             status = "active";
-        } else if (memberCount === 0) {
+        } else if (memberCount <= 1) {
             status = "closed";
         }
     
