@@ -38,12 +38,22 @@ export const getAllDiscussions = async (req, res) => {
 
                 const users = membersResponse.members || [];
 
+                const usersCount = users.length;
+    
+                let status = "pending";
+                if (usersCount > 2) {
+                    status = "active";
+                } else if (usersCount <= 1) {
+                    status = "closed";
+                }
+
                 appCreatedChannels.push({
                     channelId,
                     title,
                     description,
                     users,
-                    createdAt
+                    createdAt,
+                    status
                 });
                 }
             }
