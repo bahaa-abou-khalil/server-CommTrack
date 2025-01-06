@@ -15,7 +15,7 @@ export const getAllDiscussions = async (req, res) => {
         const channels = response.channels;
         const appCreatedChannels = [];
 
-        const userDetailsArray = [];
+        
 
         for (const channel of channels) {
             const channelId = channel.id;
@@ -38,17 +38,18 @@ export const getAllDiscussions = async (req, res) => {
                     channel: channelId,
                 });
 
-                const users = membersResponse.members || [];
-
+                const users = membersResponse.members.filter(user => user !== botUserId) || [];
                 const usersCount = users.length;
-    
+
+
                 let status = "pending";
-                if (usersCount > 2) {
+                if (usersCount > 1) {
                     status = "active";
-                } else if (usersCount <= 1) {
+                } else if (usersCount < 1) {
                     status = "closed";
                 }
 
+                const userDetailsArray = [];
                 for (const slackUserID of users) {
                     const userDetails = await getUserDetails(slackUserID);
                     if (userDetails) {

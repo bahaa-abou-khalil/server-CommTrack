@@ -42,13 +42,13 @@ export const scheduleDiscussion = (minutes, channelId = null) => {
 
 export const getUserDetails = async (slackUserID) => {
     try {
-        const user = await User.findOne({ slackUserID }).select('fullName profilePicture');
+        const user = await User.findOne({ slackUserID }).select('fullName profilePicture slackUserID');
         
         if (!user) {
             throw new Error('User not found');
         }
 
-        return { name: user.fullName, avatar: user.profilePicture };
+        return { name: user.fullName, avatar: user.profilePicture, slackUserID: user.slackUserID };
     } catch (error) {
         throw new Error(error.message);
     }
