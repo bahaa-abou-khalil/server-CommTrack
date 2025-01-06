@@ -1,9 +1,11 @@
 import { slackClient } from "../../index.js";
-import { formatDate } from "./discussions.service.js";
+import { formatDate, getUserDetails } from "./discussions.service.js";
 import { scheduleDiscussion } from "./discussions.service.js";
 import { User } from "../../db/models/user.model.js";
 
 export const getAllDiscussions = async (req, res) => {
+
+    const slackUserID = req.user.slackUserID;
 
     try {
         const response = await slackClient.conversations.list();
@@ -47,13 +49,17 @@ export const getAllDiscussions = async (req, res) => {
                     status = "closed";
                 }
 
+                const userDetails = await getUserDetails(slackUserID);
+                
+                
                 appCreatedChannels.push({
                     channelId,
                     title,
                     description,
                     users,
                     createdAt,
-                    status
+                    status,
+                    userDetails
                 });
                 }
             }
