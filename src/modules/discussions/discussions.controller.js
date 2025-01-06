@@ -98,7 +98,7 @@ export const createDiscussion = async (req, res) => {
       if (description) {
         await slackClient.conversations.setPurpose({
           channel: channelId,
-          purpose: description,
+          purpose: `${description} (${timeLimit} min)`,
         });
       }
 
