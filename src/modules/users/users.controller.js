@@ -66,8 +66,8 @@ export const getSlackUsersByIds = async (req, res) => {
         userIds.map(async (userId) => {
           const userInfo = await slackClient.users.info({ user: userId });
           return {
-            userName: userInfo.user.real_name,
-            userAvatar: userInfo.user.profile.image_192,
+            name: userInfo.user.real_name,
+            avatar: userInfo.user.profile.image_192,
           };
         })
       );

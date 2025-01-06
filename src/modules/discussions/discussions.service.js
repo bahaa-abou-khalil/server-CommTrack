@@ -1,5 +1,6 @@
 import { slackClient } from "../../index.js";
 import schedule from 'node-schedule';
+import { User } from "../../db/models/user.model.js";
 
 export const formatDate = (timestamp) =>{
     const date = new Date(timestamp * 1000);
@@ -38,3 +39,17 @@ export const scheduleDiscussion = (minutes, channelId = null) => {
         });
     }
 }
+
+export const getUserDetails = async (slackUserID) => {
+    try {
+        const user = await User.findOne({ slackUserID }).select('fullName profilePicture');
+        
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        return { name: user.fullName, avatar: user.profilePicture };
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
