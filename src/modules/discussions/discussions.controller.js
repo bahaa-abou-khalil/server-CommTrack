@@ -38,8 +38,8 @@ export const getAllDiscussions = async (req, res) => {
                     channel: channelId,
                 });
 
-                const users = membersResponse.members.filter(user => user !== botUserId) || [];
-                const usersCount = users.length;
+                const slackUsers = membersResponse.members.filter(user => user !== botUserId) || [];
+                const usersCount = slackUsers.length;
 
 
                 let status = "pending";
@@ -49,11 +49,11 @@ export const getAllDiscussions = async (req, res) => {
                     status = "closed";
                 }
 
-                const userDetailsArray = [];
-                for (const slackUserID of users) {
+                const users = [];
+                for (const slackUserID of slackUsers) {
                     const userDetails = await getUserDetails(slackUserID);
                     if (userDetails) {
-                        userDetailsArray.push(userDetails);
+                        users.push(userDetails);
                     }
                 }
                 
@@ -62,10 +62,9 @@ export const getAllDiscussions = async (req, res) => {
                     channelId,
                     title,
                     description,
-                    users,
                     createdAt,
                     status,
-                    userDetailsArray
+                    users
                 });
                 }
             }
