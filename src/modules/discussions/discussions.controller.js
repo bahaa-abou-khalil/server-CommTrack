@@ -175,7 +175,9 @@ export const redirectToDiscussion = async (req, res) => {
         const workspaceID = workspace.team.id;       
 
         const slackChannelUrl = `https://app.slack.com/client/${workspaceID}/${channelId}`;
-        res.redirect(slackChannelUrl);
+        res.status(200).json({
+            slackChannelUrl:slackChannelUrl
+        })
 
     } catch (error) {
         console.error(`Error redirecting to channel (${channelName}): ${error.message}`);
