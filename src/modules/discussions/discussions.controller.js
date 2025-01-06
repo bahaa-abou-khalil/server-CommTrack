@@ -57,14 +57,16 @@ export const getAllDiscussions = async (req, res) => {
                     }
                 }
                 
-                
+                const timeLimit = description.split('(')[1]?.split(' ')[0] ?? null;
+
                 appCreatedChannels.push({
                     channelId,
                     title,
                     description,
                     createdAt,
                     status,
-                    users
+                    users,
+                    timeLimit
                 });
                 }
             }
