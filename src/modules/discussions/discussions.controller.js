@@ -5,8 +5,6 @@ import { User } from "../../db/models/user.model.js";
 
 export const getAllDiscussions = async (req, res) => {
 
-    const slackUserID = req.user.slackUserID;
-
     try {
         const response = await slackClient.conversations.list();
 
@@ -16,6 +14,8 @@ export const getAllDiscussions = async (req, res) => {
 
         const channels = response.channels;
         const appCreatedChannels = [];
+
+        const userDetailsArray = [];
 
         for (const channel of channels) {
             const channelId = channel.id;
@@ -49,7 +49,12 @@ export const getAllDiscussions = async (req, res) => {
                     status = "closed";
                 }
 
-                const userDetails = await getUserDetails(slackUserID);
+                for (const slackUserID of users) {
+                    const userDetails = await getUserDetails(slackUserID);
+                    if (userDetails) {
+                        userDetailsArray.push(userDetails);
+                    }
+                }
                 
                 
                 appCreatedChannels.push({
@@ -59,7 +64,7 @@ export const getAllDiscussions = async (req, res) => {
                     users,
                     createdAt,
                     status,
-                    userDetails
+                    userDetailsArray
                 });
                 }
             }
