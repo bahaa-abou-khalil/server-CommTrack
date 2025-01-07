@@ -1,30 +1,44 @@
-import { WebClient } from "@slack/web-api";
-
-const token = process.env.SLACK_BOT_TOKEN;
-const slackClient = new WebClient(token);
+import { slackClient } from "../../index.js";
 
 export const getMessages = async (req, res) => {
   try {
-    const { channels } = await slackClient.conversations.list();
-    const allMessages = [];
+    const { channelId } = req.params;
 
-    for (const channel of channels) {
-      console.log(`Fetching messages from channel: ${channel.name}`);
-      
-      const { messages } = await slackClient.conversations.history({
-        channel: channel.id,
+    if (channelId) {
+      const response = await slackClient.conversations.history({
+        channel: channelId,
+        limit: 100,
       });
-
-      allMessages.push({
-        channelName: channel.name,
-        messages: messages,
+      return res.status(200).json({
+        messages: response.messages,
       });
     }
-    
-    res.status(200).json({ message: "Messages fetched successfully", data: allMessages });
+
+    const { channels } = await slackClient.conversations.list();
+    if (!channels || channels.length === 0) {
+      return res.status(404).json({ message: "No channels found" });
+    }
+
+    const allMessages = await Promise.all(
+      channels.map(async (channel) => {
+        const { messages } = await slackClient.conversations.history({
+          channel: channel.id,
+          limit: 100,
+        });
+
+        return {
+          channelName: channel.name,
+          messages,
+        };
+      })
+    );
+
+    res.status(200).json({
+      allMessages: allMessages
+    });
   } catch (error) {
-    console.error(`Error fetching messages: ${error.message}`);
-    res.status(500).json({ message: "Error fetching messages from Slack" });
+    console.error(`Error getting messages: ${error.message}`);
+    res.status(500).json({ message: "Error getting messages from Slack", error: error.message });
   }
 };
 
