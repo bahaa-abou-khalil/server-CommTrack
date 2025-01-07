@@ -80,3 +80,19 @@ export const getSlackUsersByIds = async (req, res) => {
       return res.status(500).json({ message: "Failed to retrieve users information." });
     }
 };
+
+export const getActiveUser = async (req, res) => {
+    try {
+        const id = req.user.id;
+        const user = await User.findById(id);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        res.json({ user });
+    } catch (error) {
+        console.error("Error getting active user:", error);
+        return res.status(500).json({ message: "Failed to get user." });
+    }
+};
