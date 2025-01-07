@@ -14,28 +14,28 @@ export const getMessages = async (req, res) => {
       });
     }
 
-    const { channels } = await slackClient.conversations.list();
-    if (!channels || channels.length === 0) {
-      return res.status(404).json({ message: "No channels found" });
-    }
+    // const { channels } = await slackClient.conversations.list();
+    // if (!channels || channels.length === 0) {
+    //   return res.status(404).json({ message: "No channels found" });
+    // }
 
-    const allMessages = await Promise.all(
-      channels.map(async (channel) => {
-        const { messages } = await slackClient.conversations.history({
-          channel: channel.id,
-          limit: 100,
-        });
+    // const allMessages = await Promise.all(
+    //   channels.map(async (channel) => {
+    //     const { messages } = await slackClient.conversations.history({
+    //       channel: channel.id,
+    //       limit: 100,
+    //     });
 
-        return {
-          channelName: channel.name,
-          messages,
-        };
-      })
-    );
+    //     return {
+    //       channelName: channel.name,
+    //       messages,
+    //     };
+    //   })
+    // );
 
-    res.status(200).json({
-      allMessages: allMessages
-    });
+    // res.status(200).json({
+    //   allMessages: allMessages
+    // });
   } catch (error) {
     console.error(`Error getting messages: ${error.message}`);
     res.status(500).json({ message: "Error getting messages from Slack", error: error.message });
