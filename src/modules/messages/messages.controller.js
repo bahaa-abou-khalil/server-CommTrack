@@ -1,44 +1,34 @@
 import { slackClient } from "../../index.js";
 
 export const getMessages = async (req, res) => {
-  try {
-    const { channelId } = req.params;
+  const { channelId } = req.params;
 
-    if (channelId) {
-      const response = await slackClient.conversations.history({
-        channel: channelId,
-        limit: 100,
-      });
-      return res.status(200).json({
-        messages: response.messages,
-      });
+  try {
+    if (!channelId) {
+      return res.status(400).json({ message: "Channel ID is required" });
     }
 
-    // const { channels } = await slackClient.conversations.list();
-    // if (!channels || channels.length === 0) {
-    //   return res.status(404).json({ message: "No channels found" });
-    // }
+    const response = await slackClient.conversations.history({
+      channel: channelId,
+      limit: 100,
+    });
 
-    // const allMessages = await Promise.all(
-    //   channels.map(async (channel) => {
-    //     const { messages } = await slackClient.conversations.history({
-    //       channel: channel.id,
-    //       limit: 100,
-    //     });
+    const filteredMessages = response.messages.filter(
+      (msg) => !msg.subtype && msg.user && msg.text && msg.ts
+    );
 
-    //     return {
-    //       channelName: channel.name,
-    //       messages,
-    //     };
-    //   })
-    // );
+    const formattedMessages = filteredMessages.map((msg) => ({
+      user: msg.user,
+      text: msg.text,
+      timestamp: msg.ts,
+    }));
 
-    // res.status(200).json({
-    //   allMessages: allMessages
-    // });
+    res.status(200).json({
+      messages: formattedMessages,
+    });
   } catch (error) {
-    console.error(`Error getting messages: ${error.message}`);
-    res.status(500).json({ message: "Error getting messages from Slack", error: error.message });
+    console.error(`Error fetching messages: ${error.message}`);
+    res.status(500).json({ message: "Error fetching messages", error: error.message });
   }
 };
 
