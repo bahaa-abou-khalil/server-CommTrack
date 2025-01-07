@@ -8,13 +8,13 @@ import { authMiddleware } from "../../middlewares/auth.middleware.js";
 
 const messagesRouter = new Router();
 
-messagesRouter.get("/", getMessages);
+messagesRouter.get("/:channelId?", getMessages);
 messagesRouter.post("/", postMessageToChannel);
 
 const router = new AppRouter({
     prefix: "/messages",
     router: messagesRouter,
-    middlewares: [authMiddleware],
+    middlewares: [],
   });
 
 export default router;
