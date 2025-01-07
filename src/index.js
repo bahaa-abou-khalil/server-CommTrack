@@ -11,13 +11,15 @@ import discussionsRouter from "./modules/discussions/discussions.routes.js"
 import usersRouter from "./modules/users/users.routes.js"
 import openAIRouter from "./modules/openAI/openAI.routes.js"
 import { WebClient } from "@slack/web-api";
-
+import OpenAI from "openai";
 const app = express();
 
 init(app);
 
 const token = process.env.SLACK_BOT_TOKEN;
+
 export const slackClient = new WebClient(token);
+export const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 registerRoutes(app, traditionalAuthRouter, slackAuthRouter, 
               googleAuthRouter, channelsRouter, installRouter,

@@ -1,5 +1,4 @@
-import OpenAI from "openai";
-const openai = new OpenAI();
+import { openai } from "../../index.js";
 
 export const analyzeMessages = async (req, res) => {
   const { messages } = req.body;
