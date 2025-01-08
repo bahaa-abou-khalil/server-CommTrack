@@ -1,4 +1,6 @@
 import { openai } from "../../index.js";
+import { zodResponseFormat } from "openai/helpers/zod";
+import { z } from "zod";
 
 export const analyzeMessages = async (req, res) => {
   const { messages } = req.body;
@@ -8,76 +10,35 @@ export const analyzeMessages = async (req, res) => {
       return res.status(400).json({ error: "Invalid input. Expecting an array of messages." });
     }
 
+    const alertEvent = z.object({
+      alertTitle: z.string(),
+      description: z.string(),
+      tips: z.array(z.string()),
+    });
+
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-2024-08-06",
       messages: [
         {
           role: "system",
-          content: "You are an AI assistant analyzing user messages from Slack."
+          content: "You are a company manager analyzing user messages and tone from Slack and providing alerts on missbehaviour, lack of enagement, and unproductivity."
         },
         {
           role: "user",
-          content: `Analyze the following messages and respond in JSON format:\n
+          content: `Analyze messages and alert users:\n
             ${messages.map(
               (msg, index) =>
                 `Message ${index + 1}:\nUser: ${msg.user}\nText: "${msg.text}"\nTimestamp: ${msg.timestamp}`
             ).join("\n\n")}`
         },
       ],
-      response_format: {
-        type: "json_schema",
-        json_schema: {
-          name: "alerts_schema",
-          schema: {
-            type: "object",
-            properties: {
-              userId: {
-                type: "string",
-                description: "The ID of the user."
-              },
-              alerts: {
-                type: "array",
-                description: "Array of alerts for the user.",
-                items: {
-                  type: "object",
-                  properties: {
-                    type: {
-                      type: "string",
-                      enum: ["behaviour", "productivity", "engagement"],
-                      description: "Type of alert."
-                    },
-                    alertTitle: {
-                      type: "string",
-                      description: "Brief title summarizing the alert."
-                    },
-                    alertDescription: {
-                      type: "string",
-                      description: "Short explanation of the alert."
-                    },
-                    tips: {
-                      type: "array",
-                      items: {
-                        type: "string"
-                      },
-                      minItems: 3,
-                      maxItems: 3,
-                      description: "Improvement tips for the alert."
-                    }
-                  },
-                  required: ["type", "alertTitle", "alertDescription", "tips"]
-                }
-              }
-            },
-            required: ["userId", "alerts"]
-          }
-        }
-      }
-    });
+      response_format:zodResponseFormat(alertEvent, "alert-event"),
+    })
     
-    const analysisString = completion.choices[0].message.content;
+    const result = completion.choices[0].message.content;
     
     res.json({
-      analysisString
+      result
     })
 
     
