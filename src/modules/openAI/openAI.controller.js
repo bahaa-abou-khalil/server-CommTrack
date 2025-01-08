@@ -28,10 +28,20 @@ export const analyzeMessages = async (req, res) => {
                         items: {
                             type: "object",
                             properties: {
-                                alert_title: { type: "string" },
-                                alert_description: { type: "string" }
+                                alert_type: {
+                                  type : "string",
+                                  enum: ["behaviour","engagement","productivity"]
+                                },
+                                alert_title: {
+                                  type: "string",
+                                  description: "2 or 3 words" 
+                                },
+                                alert_description: {
+                                  type: "string",
+                                  description: "maximum of 30 words"
+                                }
                             },
-                            required: ["alert_title", "alert_description"],
+                            required: ["alert_type","alert_title", "alert_description"],
                             additionalProperties: false
                         }
                     },
