@@ -19,7 +19,7 @@ export const analyzeMessages = async (req, res) => {
     const response = await openai.chat.completions.create({
       model: "gpt-4o-2024-08-06",
       messages: [
-          { role: "system", content: "You are an expert in analyzing structured data to structured output, talking with the members directly."  },
+          { role: "system", content: "You are an expert in analyzing structured data to structured output, talking with the members directly with simple and professional english."  },
           { role: "user", content: "Determine if the messages of each user violate specific guidelines in behaviour, engagement, and productivity." },
           { role: "user", content: JSON.stringify(transformedMessages) },
           { role: "user", content: "Group all alerts by the usre_id field in the input data. Each user in the output should have a 'user_id' field and an 'alerts' array containing all alerts for that user." },
@@ -59,13 +59,13 @@ export const analyzeMessages = async (req, res) => {
                           improvement_tips: {
                             type: "array",
                             items: {
-                              "type": "string",
-                              "description": "should contain no more than 10 words each."
+                              type: "string",
+                              description: "should contain no more than 10 words each."
                             },
                             description:"3 sentences",
                           }
                         },
-                        required: ["alert_type", "alert_title", "alert_description"],
+                        required: ["alert_type", "alert_title", "alert_description","improvement_tips"],
                         additionalProperties: false
                       }
                     }
