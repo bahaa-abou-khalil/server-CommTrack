@@ -14,7 +14,15 @@ export const analyzeMessages = async (req, res) => {
         {
           role: "system",
           content:
-            "You are an AI assistant analyzing user messages from Slack. Identify potential alerts based on misbehavior, low productivity, or lack of engagement. Your role is to retreive json format that inlcude userId, type ['behaviour','productivity','engagement'], alertTitle (2 words), alertDescription (short), and 3 short improvement tips.",
+            "You are an AI assistant analyzing user messages from Slack. Identify potential alerts based on misbehavior,\
+            low productivity, or lack of engagement. Group the alerts by 'userId' and provide the following information\
+            in the JSON format:\
+                - 'userId': The ID of the user.\
+                - 'alerts': An array of alerts for the user, with the following details:\
+                    - 'type': One of ['behaviour', 'productivity', 'engagement'].\
+                    - 'alertTitle': A brief 2 word title summarizing the alert.\
+                    - 'alertDescription': A short explanation of the alert.\
+                    - 'tips': An array of 3 short improvement tips related to the alert.",
         },
         {
           role: "user",
