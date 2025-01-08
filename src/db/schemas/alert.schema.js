@@ -1,19 +1,17 @@
-import {Schema, model} from "mongoose";
+import {Schema} from "mongoose";
 
 export const alertSchema =new Schema({
 
     type: {
         type: String,
-        enum: ["productivity", "engagement", "behavior"]
+        enum: ["productivity", "engagement", "behaviour"]
     },
     title: String, 
     description: String, 
-    reason: String, 
+    improvement_tips: [String], 
     date: {
         type: Date,
         default:Date.now
     }, 
-    improvement_tips: [String], 
-    channel: String
     
 })
