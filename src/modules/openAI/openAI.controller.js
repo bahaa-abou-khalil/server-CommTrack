@@ -17,31 +17,31 @@ export const analyzeMessages = async (req, res) => {
           { role: "user", content: "Determine if the users messages violates specific guidlines in behaviour, engagement, and productivty." }
       ],
       response_format: {
-          type: "json_schema",
-          json_schema: {
-              name: "math_response",
-              schema: {
-                  type: "object",
-                  properties: {
-                      steps: {
-                          type: "array",
-                          items: {
-                              type: "object",
-                              properties: {
-                                  explanation: { type: "string" },
-                                  output: { type: "string" }
-                              },
-                              required: ["explanation", "output"],
-                              additionalProperties: false
-                          }
-                      },
-                      final_answer: { type: "string" }
-                  },
-                  required: ["steps", "final_answer"],
-                  additionalProperties: false
-              },
-              strict: true
-          }
+        type: "json_schema",
+        json_schema: {
+            name: "alerts_response",
+            schema: {
+                type: "object",
+                properties: {
+                    alerts: {
+                        type: "array",
+                        items: {
+                            type: "object",
+                            properties: {
+                                alert_title: { type: "string" },
+                                alert_description: { type: "string" }
+                            },
+                            required: ["alert_title", "alert_description"],
+                            additionalProperties: false
+                        }
+                    },
+                    user_id: { type: "string" }
+                },
+                required: ["alerts", "user_id"],
+                additionalProperties: false
+            },
+            strict: true
+        }
       }
     });
     
