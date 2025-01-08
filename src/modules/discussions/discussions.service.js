@@ -40,4 +40,3 @@ export const scheduleTimeDiscussion = (minutes, channelId = null) => {
         });
     }
 }
-

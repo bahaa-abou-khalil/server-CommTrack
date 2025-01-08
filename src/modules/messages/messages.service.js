@@ -1,13 +1,12 @@
 import { slackClient } from "../../index.js";
 
-
 export const getMessages = async (channelId) => {
-
   try {
     if (!channelId) {
-      return res.status(400).json({ message: "Channel ID is required" });
+        return { 
+            message: "Channel ID is required" 
+        };
     }
-
     const response = await slackClient.conversations.history({
       channel: channelId,
       limit: 100,
@@ -23,11 +22,14 @@ export const getMessages = async (channelId) => {
       timestamp: msg.ts,
     }));
 
-    res.status(200).json({
-      messages: formattedMessages,
-    });
+    return {
+        messages: formattedMessages,
+    };
   } catch (error) {
     console.error(`Error fetching messages: ${error.message}`);
-    res.status(500).json({ message: "Error fetching messages", error: error.message });
+    return {
+        message: "Error fetching messages", error: error.message 
+    };
   }
 };
+
