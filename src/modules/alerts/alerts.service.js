@@ -8,8 +8,19 @@ export const storeUsersAlerts = async (data) => {
     try {
         const { users } = JSON.parse(data.result);
   
-        console.log(users)
-        
+
+        for (const user of users) {
+            const alerts = user.alerts.map(alert => ({
+                type: alert.alert_type,
+                title: alert.alert_title,
+                description: alert.alert_description,
+                improvement_tips: alert.improvement_tips,
+            }));
+
+            console.log(alerts)
+    
+
+        }
   
     } catch (error) {
         console.error(`Error occured: ${error.message}`);
