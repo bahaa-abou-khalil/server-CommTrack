@@ -9,12 +9,19 @@ export const analyzeMessages = async (req, res) => {
     if (!messages || !Array.isArray(messages)) {
       return res.status(400).json({ error: "Invalid input. Expecting an array of messages." });
     }
+    const transformedMessages = messages.map((msg) => ({
+      user_id: msg.user,
+      message: msg.text,
+      timestamp: msg.timestamp,
+    }));
+
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o-2024-08-06",
       messages: [
-          { role: "system", content: "You are an expert in analyzing structured data to structured output." },
-          { role: "user", content: "Determine if the users messages violates specific guidlines in behaviour, engagement, and productivty." }
+          { role: "system", content: "You are an expert in analyzing structured data to structured output."  },
+          { role: "user", content: "Determine if the messages of each user violate specific guidelines in behaviour, engagement, and productivity." },
+          { role: "user", content: JSON.stringify(transformedMessages) },
       ],
       response_format: {
         type: "json_schema",
@@ -23,6 +30,9 @@ export const analyzeMessages = async (req, res) => {
             schema: {
                 type: "object",
                 properties: {
+                  user_id: { 
+                    type: "string"
+                  },
                     alerts: {
                         type: "array",
                         items: {
@@ -45,7 +55,7 @@ export const analyzeMessages = async (req, res) => {
                             additionalProperties: false
                         }
                     },
-                    user_id: { type: "string" }
+                    
                 },
                 required: ["alerts", "user_id"],
                 additionalProperties: false
