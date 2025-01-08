@@ -10,32 +10,42 @@ export const analyzeMessages = async (req, res) => {
       return res.status(400).json({ error: "Invalid input. Expecting an array of messages." });
     }
 
-    const alertEvent = z.object({
-      alertTitle: z.string(),
-      description: z.string(),
-      tips: z.array(z.string()),
-    });
-
-    const completion = await openai.chat.completions.create({
+    const response = await openai.chat.completions.create({
       model: "gpt-4o-2024-08-06",
       messages: [
-        {
-          role: "system",
-          content: "You are a company manager analyzing user messages and tone from Slack and providing alerts on missbehaviour, lack of enagement, and unproductivity."
-        },
-        {
-          role: "user",
-          content: `Analyze messages and alert users:\n
-            ${messages.map(
-              (msg, index) =>
-                `Message ${index + 1}:\nUser: ${msg.user}\nText: "${msg.text}"\nTimestamp: ${msg.timestamp}`
-            ).join("\n\n")}`
-        },
+          { role: "system", content: "You are an expert in analyzing structured data to structured output." },
+          { role: "user", content: "Determine if the users messages violates specific guidlines in behaviour, engagement, and productivty." }
       ],
-      response_format:zodResponseFormat(alertEvent, "alert-event"),
-    })
+      response_format: {
+          type: "json_schema",
+          json_schema: {
+              name: "math_response",
+              schema: {
+                  type: "object",
+                  properties: {
+                      steps: {
+                          type: "array",
+                          items: {
+                              type: "object",
+                              properties: {
+                                  explanation: { type: "string" },
+                                  output: { type: "string" }
+                              },
+                              required: ["explanation", "output"],
+                              additionalProperties: false
+                          }
+                      },
+                      final_answer: { type: "string" }
+                  },
+                  required: ["steps", "final_answer"],
+                  additionalProperties: false
+              },
+              strict: true
+          }
+      }
+    });
     
-    const result = completion.choices[0].message.content;
+    const result = response.choices[0].message.content;
     
     res.json({
       result
