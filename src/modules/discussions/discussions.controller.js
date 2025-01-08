@@ -1,5 +1,6 @@
 import { slackClient } from "../../index.js";
-import { formatDate, getUserDetails } from "./discussions.service.js";
+import { formatDate } from "./discussions.service.js";
+import { getUserDetails } from "../users/users.service.js";
 import { scheduleTimeDiscussion } from "./discussions.service.js";
 import { User } from "../../db/models/user.model.js";
 
