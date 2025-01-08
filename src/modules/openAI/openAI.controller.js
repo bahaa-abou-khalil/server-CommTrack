@@ -9,35 +9,79 @@ export const analyzeMessages = async (req, res) => {
     }
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4",
+      model: "gpt-4o-2024-08-06",
       messages: [
         {
           role: "system",
-          content:
-            "You are an AI assistant analyzing user messages from Slack. Identify potential alerts based on misbehavior,\
-            low productivity, or lack of engagement. Group the alerts by 'userId' and provide the following information\
-            in the JSON format:\
-                - 'userId': The ID of the user.\
-                - 'alerts': An array of alerts for the user, with the following details:\
-                    - 'type': One of ['behaviour', 'productivity', 'engagement'].\
-                    - 'alertTitle': A brief 2 word title summarizing the alert.\
-                    - 'alertDescription': A short explanation of the alert.\
-                    - 'tips': An array of 3 short improvement tips related to the alert.",
+          content: "You are an AI assistant analyzing user messages from Slack."
         },
         {
           role: "user",
-          content: `Analyze the following messages and respond with json format:\n
-          ${messages.map(
+          content: `Analyze the following messages and respond in JSON format:\n
+            ${messages.map(
               (msg, index) =>
                 `Message ${index + 1}:\nUser: ${msg.user}\nText: "${msg.text}"\nTimestamp: ${msg.timestamp}`
-            )
-            .join("\n\n")}`,
+            ).join("\n\n")}`
         },
       ],
+      response_format: {
+        type: "json_schema",
+        json_schema: {
+          name: "alerts_schema",
+          schema: {
+            type: "object",
+            properties: {
+              userId: {
+                type: "string",
+                description: "The ID of the user."
+              },
+              alerts: {
+                type: "array",
+                description: "Array of alerts for the user.",
+                items: {
+                  type: "object",
+                  properties: {
+                    type: {
+                      type: "string",
+                      enum: ["behaviour", "productivity", "engagement"],
+                      description: "Type of alert."
+                    },
+                    alertTitle: {
+                      type: "string",
+                      description: "Brief title summarizing the alert."
+                    },
+                    alertDescription: {
+                      type: "string",
+                      description: "Short explanation of the alert."
+                    },
+                    tips: {
+                      type: "array",
+                      items: {
+                        type: "string"
+                      },
+                      minItems: 3,
+                      maxItems: 3,
+                      description: "Improvement tips for the alert."
+                    }
+                  },
+                  required: ["type", "alertTitle", "alertDescription", "tips"]
+                }
+              }
+            },
+            required: ["userId", "alerts"]
+          }
+        }
+      }
     });
+    
+    const analysisString = completion.choices[0].message.content;
+    
+    res.json({
+      analysisString
+    })
 
-    const aiResponse = completion.choices[0].message.content;
-    res.status(200).json({ analysis: aiResponse });
+    
+  
   } catch (error) {
     console.error("Error analyzing messages:", error);
     res.status(500).json({ error: "Failed to analyze messages" });

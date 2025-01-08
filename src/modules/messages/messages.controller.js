@@ -7,6 +7,13 @@ export const getMessages = async (req, res) => {
     if (!channelId) {
       return res.status(400).json({ message: "Channel ID is required" });
     }
+////
+// await slackClient.conversations.unarchive({ channel: channelId });
+// await slackClient.conversations.join({
+//   channel: channelId,
+// });
+///
+
 
     const response = await slackClient.conversations.history({
       channel: channelId,

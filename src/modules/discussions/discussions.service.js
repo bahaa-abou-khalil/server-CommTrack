@@ -18,7 +18,7 @@ export const formatDate = (timestamp) =>{
     return formattedDate;
 }
 
-export const scheduleDiscussion = (minutes, channelId = null) => {
+export const scheduleTimeDiscussion = (minutes, channelId = null) => {
 
     let endTime = null
     if (minutes) {

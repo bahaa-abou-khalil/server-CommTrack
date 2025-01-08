@@ -1,6 +1,6 @@
 import { slackClient } from "../../index.js";
 import { formatDate, getUserDetails } from "./discussions.service.js";
-import { scheduleDiscussion } from "./discussions.service.js";
+import { scheduleTimeDiscussion } from "./discussions.service.js";
 import { User } from "../../db/models/user.model.js";
 
 export const getAllDiscussions = async (req, res) => {
@@ -104,7 +104,7 @@ export const createDiscussion = async (req, res) => {
         });
       }
 
-      scheduleDiscussion(timeLimit, channelId)
+      scheduleTimeDiscussion(timeLimit, channelId)
   
       const user = await User.findById(req.user._id);
       if (!user) return res.status(404).json({ error: 'User not found' });
