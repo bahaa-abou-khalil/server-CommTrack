@@ -17,9 +17,17 @@ export const storeUsersAlerts = async (data) => {
                 improvement_tips: alert.improvement_tips,
             }));
 
-            console.log(alerts)
     
-
+            const existingUser = await User.findOne({ 
+                slackUserID: user.user_id });
+    
+            if (existingUser) {
+                existingUser.alerts = existingUser.alerts.concat(alerts);
+                await existingUser.save();
+                console.log(`Alerts updated for user: ${user.user_id}`);
+            } else {
+                console.log(`User not found in database: ${user.user_id}`);
+            }
         }
   
     } catch (error) {
