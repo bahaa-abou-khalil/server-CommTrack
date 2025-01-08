@@ -1,7 +1,6 @@
 import { slackClient } from "../../index.js";
 import schedule from 'node-schedule';
 import { User } from "../../db/models/user.model.js";
-import { parse, format } from 'date-fns';
 
 export const formatDate = (timestamp) =>{
     const date = new Date(timestamp * 1000);
@@ -18,7 +17,17 @@ export const formatDate = (timestamp) =>{
     return formattedDate;
 }
 
-export const scheduleTimeDiscussion = (minutes, channelId = null) => {
+
+const archiveDiscussion = async (channelId) =>{
+    try {
+        await slackClient.conversations.archive({ channel: channelId });
+        console.log(`Channel ${channelId} has been archived.`);
+    } catch (archiveError) {
+        console.error(`Failed to archive channel: ${archiveError.message}`);
+    }
+}
+
+export const scheduleDiscussionActions = (minutes, channelId = null) => {
 
     let endTime = null
     if (minutes) {
@@ -31,12 +40,7 @@ export const scheduleTimeDiscussion = (minutes, channelId = null) => {
 
     if (endTime) {
         schedule.scheduleJob(endTime, async () => {
-            try {
-                await slackClient.conversations.archive({ channel: channelId });
-                console.log(`Channel ${channelId} has been archived.`);
-            } catch (archiveError) {
-                console.error(`Failed to archive channel: ${archiveError.message}`);
-            }
+
         });
     }
 }
