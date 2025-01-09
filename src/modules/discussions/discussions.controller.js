@@ -12,7 +12,7 @@ export const getDiscussions = async (req,res) => {
 
         const discussions = await Discussion.find().populate({
             path: "createdBy",
-            select: "profilePicture",
+            select: "profilePicture fullName",
         })
 
         res.json({

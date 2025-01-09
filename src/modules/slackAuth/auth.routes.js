@@ -2,13 +2,15 @@ import { Router } from "express";
 import { AppRouter } from "../../config/AppRouter.js";
 import {
     signInWithSlack,
-    signInCallback
+    signInCallback,
+    slackEvents
     } from "./auth.controller.js"
 
 const authRouter = new Router();
 
 authRouter.get("/", signInWithSlack);
 authRouter.get("/welcome", signInCallback);
+authRouter.post('/events', slackEvents);
 
 const router = new AppRouter({
     prefix: "/slackAuth",
