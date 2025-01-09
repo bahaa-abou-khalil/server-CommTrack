@@ -1,6 +1,5 @@
 import {Schema, model} from "mongoose";
 import { alertSchema } from "../schemas/alert.schema.js";
-import { discussionSchema } from "../schemas/discussion.schema.js";
 
 const userSchema = new Schema({
  
@@ -46,7 +45,12 @@ const userSchema = new Schema({
             type: String
         }, 
         alerts: [alertSchema],
-        joinedDiscussions:[discussionSchema]
+        joinedDiscussions: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Discussion",
+            },
+        ],
 }
 )
 
