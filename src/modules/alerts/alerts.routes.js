@@ -5,12 +5,12 @@ import { authMiddleware } from "../../middlewares/auth.middleware.js";
 
 const alertsRouter = new Router();
 
-alertsRouter.post("/",getUserAlerts)
+alertsRouter.get("/",getUserAlerts)
 
 const router = new AppRouter({
     prefix: "/alerts",
     router: alertsRouter,
-    middlewares: [],
+    middlewares: [authMiddleware],
   });
 
 export default router;
