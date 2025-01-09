@@ -9,6 +9,10 @@ export const alertSchema =new Schema({
     title: String, 
     description: String, 
     improvement_tips: [String], 
+    isAcknowledged:{
+        type: Boolean,
+        default: false
+    },
     date: {
         type: Date,
         default:Date.now
