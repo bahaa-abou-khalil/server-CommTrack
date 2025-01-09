@@ -7,8 +7,10 @@ export const getUserAlerts = async (req,res) => {
     try{
         const user = await User.findById(id)
 
+        const alerts = user.alerts.filter(alert => !alert.isAcknowledged);
+
         res.json({
-            alerts: user.alerts
+            alerts: alerts
         })
 
     }catch(error){
