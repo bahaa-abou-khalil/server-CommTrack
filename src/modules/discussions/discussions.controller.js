@@ -4,10 +4,32 @@ import { getUserDetails } from "../users/users.service.js";
 import { scheduleDiscussionActions } from "./discussions.service.js";
 import { User } from "../../db/models/user.model.js";
 import { Discussion } from "../../db/models/discussion.model.js";
+
+
+
+export const getDiscussions = async (req,res) => {
+    try{
+
+        const discussions = await Discussion.find();
+
+        res.json({
+            discussions : discussions
+        })
+
+    }catch(error){
+
+        console.log(`Error getting discussions: ${error}`)
+        res.status(500).json({
+            error: "Something went wrong."
+        })
+        
+    }
+}
+
 export const getAllDiscussions = async (req, res) => {
 
     try {
-        const response = await slackClient.conversations.list();
+        
 
         if (!response.ok) {
         return res.status(500).json({ message: 'Failed to fetch channels from Slack.' });
