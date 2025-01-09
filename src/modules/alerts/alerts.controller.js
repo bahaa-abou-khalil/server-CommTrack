@@ -1,11 +1,11 @@
 import { User } from "../../db/models/user.model.js";
 import { storeUsersAlerts } from "./alerts.service.js";
 
-export const getUserAlerts = (req,res) => {
+export const getUserAlerts = async (req,res) => {
     const id = req.user.id;
 
     try{
-        const user = User.findById(id)
+        const user = await User.findById(id)
 
         res.json({
             alerts: user.alerts
