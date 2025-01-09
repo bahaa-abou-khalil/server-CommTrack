@@ -1,5 +1,5 @@
 import { slackClient } from "../../index.js";
-import { formatDate } from "./discussions.service.js";
+import { formatTimestamp } from "./discussions.service.js";
 import { getUserDetails } from "../users/users.service.js";
 import { scheduleDiscussionActions } from "./discussions.service.js";
 import { User } from "../../db/models/user.model.js";
@@ -34,7 +34,7 @@ export const getAllDiscussions = async (req, res) => {
                 const description = channelInfo.channel.purpose.value || 'No description available';
                 const channelId = channelInfo.channel.id;
                 const createdAtTimestamp = channelInfo.channel.created;
-                const createdAt = formatDate(createdAtTimestamp);
+                const createdAt = formatTimestamp(createdAtTimestamp);
                 const membersResponse = await slackClient.conversations.members({
                     channel: channelId,
                 });

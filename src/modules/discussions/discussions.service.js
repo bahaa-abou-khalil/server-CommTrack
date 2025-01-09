@@ -4,7 +4,7 @@ import { analyzeMessages } from "../openAI/openAI.service.js";
 import { storeUsersAlerts } from "../alerts/alerts.service.js";
 import { getMessages } from "../messages/messages.service.js";
 
-export const formatDate = (timestamp) =>{
+export const formatTimestamp = (timestamp) =>{
     const date = new Date(timestamp * 1000);
     
     const formattedDate = date.toLocaleString('en-US', {
@@ -47,3 +47,7 @@ export const scheduleDiscussionActions = async (minutes, channelId) => {
         });
     }
 }
+
+
+
+

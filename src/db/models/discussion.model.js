@@ -5,6 +5,8 @@ export const discussionSchema = new Schema({
 
     title: String, 
     description: String, 
+    timeLimit: Number,
+    channelId : String,
     status: {
         type:String,
         default: "pending",
@@ -14,5 +16,7 @@ export const discussionSchema = new Schema({
         type:Date,
         default: Date.now
     },  
-    timeLimit: Number
+    
 })
+
+export const Discussion = model("Discussion", discussionSchema)
