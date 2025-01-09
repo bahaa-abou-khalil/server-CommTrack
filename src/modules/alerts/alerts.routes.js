@@ -8,7 +8,7 @@ import { authMiddleware } from "../../middlewares/auth.middleware.js";
 const alertsRouter = new Router();
 
 alertsRouter.get("/",getUserAlerts)
-alertsRouter.post("/",acknowledgeAlert)
+alertsRouter.get("/:alertId",acknowledgeAlert)
 
 const router = new AppRouter({
     prefix: "/alerts",
