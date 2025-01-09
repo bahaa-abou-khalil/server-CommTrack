@@ -102,12 +102,9 @@ export const analyzeMessages = async (messages) => {
     });
     
     const result = response.choices[0].message.content;
-    
     return {
         result
     }
-
-    
   
   } catch (error) {
     console.error("Error analyzing messages:", error);

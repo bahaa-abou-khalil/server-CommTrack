@@ -1,5 +1,6 @@
 import { slackClient } from "../../index.js";
 import { getMessages } from "./messages.service.js";
+
 export const postMessageToChannel = async (req, res) => {
     const { channelName, message } = req.body;
   

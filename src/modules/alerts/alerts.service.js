@@ -34,5 +34,3 @@ export const storeUsersAlerts = async (data) => {
         console.error(`Error occured: ${error.message}`);
     }
 };
-
-storeUsersAlerts(data)

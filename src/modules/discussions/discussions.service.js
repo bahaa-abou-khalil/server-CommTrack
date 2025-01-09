@@ -1,8 +1,8 @@
 import { slackClient } from "../../index.js";
 import schedule from 'node-schedule';
-import { getMessages } from "../messages/messages.service.js";
 import { analyzeMessages } from "../openAI/openAI.service.js";
 import { storeUsersAlerts } from "../alerts/alerts.service.js";
+import { getMessages } from "../messages/messages.service.js";
 
 export const formatDate = (timestamp) =>{
     const date = new Date(timestamp * 1000);
@@ -30,7 +30,7 @@ const archiveDiscussion = async (channelId) =>{
 }
 
 
-export const scheduleDiscussionActions = (minutes, channelId) => {
+export const scheduleDiscussionActions = async (minutes, channelId) => {
 
     let endTime = null
     if (minutes) {
@@ -40,10 +40,10 @@ export const scheduleDiscussionActions = (minutes, channelId) => {
 
     if (endTime) {
         schedule.scheduleJob(endTime, async () => {
-            const messages = await getMessages(channelId);
-            const alertsResponse = await analyzeMessages(messages);
-            storeUsersAlerts(alertsResponse);
-            archiveDiscussion(channelId);
+            const messageResponse = await getMessages(channelId);
+            const alertsResponse = await analyzeMessages(messageResponse.messages);
+            await storeUsersAlerts(alertsResponse);
+            await archiveDiscussion(channelId);
         });
     }
 }

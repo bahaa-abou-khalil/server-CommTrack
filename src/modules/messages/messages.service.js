@@ -21,7 +21,6 @@ export const getMessages = async (channelId) => {
       text: msg.text,
       timestamp: msg.ts,
     }));
-
     return {
         messages: formattedMessages,
     };
