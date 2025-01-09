@@ -3,7 +3,7 @@ import { formatTimestamp } from "./discussions.service.js";
 import { getUserDetails } from "../users/users.service.js";
 import { scheduleDiscussionActions } from "./discussions.service.js";
 import { User } from "../../db/models/user.model.js";
-
+import { Discussion } from "../../db/models/discussion.model.js";
 export const getAllDiscussions = async (req, res) => {
 
     try {
@@ -91,40 +91,39 @@ export const createDiscussion = async (req, res) => {
         return res.status(500).json({ message: "Channel title is required." });
       }
   
-      const response = await slackClient.conversations.create({
+    const response = await slackClient.conversations.create({
         name: title,
         is_private: false,
-      });
+    });
   
-      const channelId = response.channel.id;
+    const channelId = response.channel.id;
   
-      if (description) {
+    if (description) {
         await slackClient.conversations.setPurpose({
           channel: channelId,
           purpose: `${description} (${timeLimit} min)`,
         });
-      }
+    }
 
-      await scheduleDiscussionActions(timeLimit, channelId)
-  
-      const user = await User.findById(req.user._id);
-      if (!user) return res.status(404).json({ error: 'User not found' });
-
-      const newDiscussion = { 
+    const newDiscussion = new Discussion({ 
         title: title, 
-        description: description, 
-        timeLimit: timeLimit};
+        description: description,
+        timeLimit: timeLimit,
+        channelId: channelId,
+    });
+    
+    await newDiscussion.save();
 
-      user.joinedDiscussions.push(newDiscussion);
+    await scheduleDiscussionActions(timeLimit, channelId)
+  
 
-      await user.save();
 
-      return res.json({
+    return res.json({
         message: "Channel created successfully.",
         channel: response,
         channelId: channelId,
         discussion: newDiscussion
-      });
+    });
     } catch (error) {
       console.error(`Error creating channel: ${error.message}`);
       return res.status(500).json({
