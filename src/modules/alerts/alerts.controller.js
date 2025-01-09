@@ -19,7 +19,7 @@ export const getUserAlerts = async (req,res) => {
 
 
 export const acknowledgeAlert = async (req, res) => {
-    const { alertId } = req.body;
+    const { alertId } = req.params;
     const userId = req.user.id;
 
     try {
