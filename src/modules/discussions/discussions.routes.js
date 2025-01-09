@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AppRouter } from "../../config/AppRouter.js";
 import {
-    getAllDiscussions,
+    getSlackDiscussions,
     createDiscussion,
     checkDiscussionStatus,
     redirectToDiscussion,
@@ -13,8 +13,7 @@ import { authMiddleware } from "../../middlewares/auth.middleware.js";
 
 const discussionsRouter = new Router();
 
-discussionsRouter.get("/d", getDiscussions);
-discussionsRouter.get("/", getAllDiscussions);
+discussionsRouter.get("/", getDiscussions);
 discussionsRouter.post("/", createDiscussion);
 discussionsRouter.get("/status/:channelId", checkDiscussionStatus);
 discussionsRouter.get("/redirect/:channelId", redirectToDiscussion);

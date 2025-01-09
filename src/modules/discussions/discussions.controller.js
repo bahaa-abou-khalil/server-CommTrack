@@ -10,7 +10,10 @@ import { Discussion } from "../../db/models/discussion.model.js";
 export const getDiscussions = async (req,res) => {
     try{
 
-        const discussions = await Discussion.find();
+        const discussions = await Discussion.find().populate({
+            path: "createdBy",
+            select: "profilePicture",
+        })
 
         res.json({
             discussions : discussions
@@ -22,11 +25,11 @@ export const getDiscussions = async (req,res) => {
         res.status(500).json({
             error: "Something went wrong."
         })
-        
+
     }
 }
 
-export const getAllDiscussions = async (req, res) => {
+export const getSlackDiscussions = async (req, res) => {
 
     try {
         
