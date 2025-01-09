@@ -111,6 +111,7 @@ export const getSlackDiscussions = async (req, res) => {
 export const createDiscussion = async (req, res) => {
     try {
       const { title, description, timeLimit } = req.body;
+      const id = req.user.id;
   
       if (!title) {
         return res.status(500).json({ message: "Channel title is required." });
@@ -135,6 +136,7 @@ export const createDiscussion = async (req, res) => {
         description: description,
         timeLimit: timeLimit,
         channelId: channelId,
+        createdBy: id
     });
     
     await newDiscussion.save();
