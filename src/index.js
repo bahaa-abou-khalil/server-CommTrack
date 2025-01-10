@@ -11,6 +11,7 @@ import discussionsRouter from "./modules/discussions/discussions.routes.js"
 import usersRouter from "./modules/users/users.routes.js"
 import openAIRouter from "./modules/openAI/openAI.routes.js"
 import alertsRouter from "./modules/alerts/alerts.routes.js"
+import eventsRouter from "./modules/events/events.routes.js"
 import { WebClient } from "@slack/web-api";
 import OpenAI from "openai";
 const app = express();
@@ -25,7 +26,7 @@ export const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 registerRoutes(app, traditionalAuthRouter, slackAuthRouter, 
               googleAuthRouter, channelsRouter, installRouter,
               messagesRouter, discussionsRouter, usersRouter,
-              openAIRouter, alertsRouter);  
+              openAIRouter, alertsRouter, eventsRouter);  
 
 app.listen(process.env.SERVER_PORT, () => {
   console.log(`Server running on port ${process.env.SERVER_PORT}`);
