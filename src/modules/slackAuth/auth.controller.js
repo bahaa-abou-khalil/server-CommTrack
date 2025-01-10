@@ -92,3 +92,4 @@ export const slackEvents = (req, res) => {
   
     res.status(200).send('Event received');
 }
+
