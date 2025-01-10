@@ -214,6 +214,54 @@ export const redirectToDiscussion = async (req, res) => {
     }
 };
 
+export const getDiscussionMembers = async (req, res) => {
+    try {
+        const { channelId } = req.params;
+
+        if (!channelId) {
+            return res.status(500).send({
+                message: "'channelId' is required"
+            });
+        }
+
+        const membersResponse = await slackClient.conversations.members({
+            channel: channelId,
+        });
+        const authResponse = await slackClient.auth.test();
+        const botUserId = authResponse.user_id;
+
+        const slackUsers = membersResponse.members.filter(user => user !== botUserId) || [];
+        const usersCount = slackUsers.length;
+
+        const users = [];
+        for (const slackUserID of slackUsers) {
+            const userInfo = await slackClient.users.info({
+                user: slackUserID,
+            });
+            if (!userInfo.ok) {
+                res.status(500).json({
+                    message: "Error getting user info",
+                })
+            }
+            const { real_name, profile } = userInfo.user;
+            users.push({
+                name: real_name,
+                avatar: profile.image_192,
+            });
+        }
+
+        res.json({
+            users: users,
+            count: usersCount
+        });
+
+    } catch (error) {
+        console.error(`Error getting discussion members: ${error.message}`);
+        res.status(500).json({
+            message: "An error occurred.",
+        });
+    }
+}
 
 
 
