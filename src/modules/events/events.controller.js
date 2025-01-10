@@ -7,18 +7,20 @@ export const trackStoreJoin = async (req, res) => {
 
         if (event.type === "member_joined_channel") {
             const channelId = event.channel;
-            const userId = event.user;
+            const slackUserID = event.user;
 
             const discussion = await Discussion.findOne({ channelId });
             if (!discussion) {
-                return res.status(500).json({ message: "Discussion not found for this channel." });
+                return res.status(500).json({ message: "Discussion not found." });
             }
 
-            const user = await User.findOne({ slackUserID: userId });
-            if (user) {
-                user.joinedDiscussions.push(discussion._id);
-                await user.save();
+            const user = await User.findOne({ slackUserID })
+            if (!user) {
+                return res.status(500).json({ message: "User not found." });
             }
+
+            discussion.joinedUsers.push(user._id);
+            await discussion.save();
 
             return res.status(200).send("Member join tracked.");
         }
