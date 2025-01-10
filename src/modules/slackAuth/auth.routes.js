@@ -3,7 +3,6 @@ import { AppRouter } from "../../config/AppRouter.js";
 import {
     signInWithSlack,
     signInCallback,
-    slackEvents,
     } from "./auth.controller.js"
 
 const authRouter = new Router();

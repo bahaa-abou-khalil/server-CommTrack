@@ -1,3 +1,6 @@
+import { User } from "../../db/models/user.model.js";
+import { Discussion } from "../../db/models/discussion.model.js";
+
 export const trackStoreJoin = async (req, res) => {
     try {
         const { event } = req.body;
@@ -6,7 +9,16 @@ export const trackStoreJoin = async (req, res) => {
             const channelId = event.channel;
             const userId = event.user;
 
-            console.log(`User ${userId} joined channel ${channelId}`);
+            const discussion = await Discussion.findOne({ channelId });
+            if (!discussion) {
+                return res.status(500).json({ message: "Discussion not found for this channel." });
+            }
+
+            const user = await User.findOne({ slackUserID: userId });
+            if (user) {
+                user.joinedDiscussions.push(discussion._id);
+                await user.save();
+            }
 
             return res.status(200).send("Member join tracked.");
         }

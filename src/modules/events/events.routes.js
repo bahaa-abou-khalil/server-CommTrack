@@ -8,6 +8,7 @@ import {
 const eventsRouter = new Router();
 
 eventsRouter.post("/", trackStoreJoin);
+eventsRouter.post("/", slackEvents);
 
 
 const router = new AppRouter({

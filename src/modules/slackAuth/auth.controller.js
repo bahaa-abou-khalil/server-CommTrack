@@ -81,15 +81,3 @@ export const signInCallback = async (req, res) => {
       res.status(500).send('Error during Slack sign in.');
     }
 };
-  
-export const slackEvents = (req, res) => {
-    console.log(req.body);
-    const { type, challenge } = req.body;
-  
-    if (type === 'url_verification') {
-        return res.status(200).json({ challenge });
-    }
-  
-    res.status(200).send('Event received');
-}
-
