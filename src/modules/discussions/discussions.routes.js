@@ -6,7 +6,8 @@ import {
     checkDiscussionStatus,
     redirectToDiscussion,
     getDiscussions,
-    trackStoreJoin
+    trackStoreJoin,
+    slackEvents
 } from "./discussions.controller.js";
 
 import { authMiddleware } from "../../middlewares/auth.middleware.js";
@@ -19,6 +20,7 @@ discussionsRouter.get("/events", trackStoreJoin);
 discussionsRouter.post("/", createDiscussion);
 discussionsRouter.get("/status/:channelId", checkDiscussionStatus);
 discussionsRouter.get("/redirect/:channelId", redirectToDiscussion);
+discussionsRouter.post('/events', slackEvents);
 
 const router = new AppRouter({
     prefix: "/discussions",
