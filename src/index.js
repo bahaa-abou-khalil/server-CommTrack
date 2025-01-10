@@ -14,6 +14,9 @@ import alertsRouter from "./modules/alerts/alerts.routes.js"
 import eventsRouter from "./modules/events/events.routes.js"
 import { WebClient } from "@slack/web-api";
 import OpenAI from "openai";
+import socketIo from 'socket.io';
+
+
 const app = express();
 
 init(app);
@@ -22,6 +25,7 @@ const token = process.env.SLACK_BOT_TOKEN;
 
 export const slackClient = new WebClient(token);
 export const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+export const io = socketIo(app);
 
 registerRoutes(app, traditionalAuthRouter, slackAuthRouter, 
               googleAuthRouter, channelsRouter, installRouter,
