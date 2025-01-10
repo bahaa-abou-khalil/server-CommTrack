@@ -14,8 +14,8 @@ import alertsRouter from "./modules/alerts/alerts.routes.js"
 import eventsRouter from "./modules/events/events.routes.js"
 import { WebClient } from "@slack/web-api";
 import OpenAI from "openai";
-import socketIo from 'socket.io';
-
+import { Server } from 'socket.io';
+import { createServer } from 'http';
 
 const app = express();
 
@@ -25,7 +25,16 @@ const token = process.env.SLACK_BOT_TOKEN;
 
 export const slackClient = new WebClient(token);
 export const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-export const io = socketIo(app);
+
+const httpServer = createServer(app);
+export const io = new Server(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+  },
+});
+
+
 
 registerRoutes(app, traditionalAuthRouter, slackAuthRouter, 
               googleAuthRouter, channelsRouter, installRouter,
@@ -34,6 +43,12 @@ registerRoutes(app, traditionalAuthRouter, slackAuthRouter,
 
 app.listen(process.env.SERVER_PORT, () => {
   console.log(`Server running on port ${process.env.SERVER_PORT}`);
+
+  connectToDatabase();
+});
+
+httpServer.listen('8081', () => {
+  console.log(`Socket running on port 8081`);
 
   connectToDatabase();
 });
