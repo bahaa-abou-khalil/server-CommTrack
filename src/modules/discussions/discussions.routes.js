@@ -5,7 +5,8 @@ import {
     createDiscussion,
     checkDiscussionStatus,
     redirectToDiscussion,
-    getDiscussions
+    getDiscussions,
+    trackStoreJoin
 } from "./discussions.controller.js";
 
 import { authMiddleware } from "../../middlewares/auth.middleware.js";
@@ -14,6 +15,7 @@ import { authMiddleware } from "../../middlewares/auth.middleware.js";
 const discussionsRouter = new Router();
 
 discussionsRouter.get("/", getDiscussions);
+discussionsRouter.get("/events", trackStoreJoin);
 discussionsRouter.post("/", createDiscussion);
 discussionsRouter.get("/status/:channelId", checkDiscussionStatus);
 discussionsRouter.get("/redirect/:channelId", redirectToDiscussion);
