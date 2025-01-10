@@ -234,4 +234,14 @@ export const trackStoreJoin = async (req, res) => {
     }
 };
 
+export const slackEvents = (req, res) => {
+    const { type, challenge } = req.body;
+  
+    if (type === 'url_verification') {
+        return res.status(200).json({ challenge });
+    }
+  
+    res.status(200).send('Event received');
+}
+
 
