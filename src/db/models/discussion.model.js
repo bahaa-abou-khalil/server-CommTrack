@@ -11,6 +11,12 @@ export const discussionSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User",
     },
+    joinedUsers: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+        },
+    ],
     status: {
         type:String,
         default: "pending",
