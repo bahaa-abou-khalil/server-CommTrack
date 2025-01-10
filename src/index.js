@@ -34,7 +34,15 @@ export const io = new Server(httpServer, {
   },
 });
 
-
+io.on('connection', (socket) => {
+  console.log('frontend connected');
+  
+  socket.emit('message', 'Hello from backend');
+  
+  socket.on('disconnect', () => {
+    console.log('frontend disconnected');
+  });
+});
 
 registerRoutes(app, traditionalAuthRouter, slackAuthRouter, 
               googleAuthRouter, channelsRouter, installRouter,
