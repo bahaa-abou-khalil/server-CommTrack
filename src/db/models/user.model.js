@@ -45,12 +45,7 @@ const userSchema = new Schema({
             type: String
         }, 
         alerts: [alertSchema],
-        joinedDiscussions: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Discussion",
-            },
-        ],
+
 }
 )
 
