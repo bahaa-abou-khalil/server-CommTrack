@@ -250,10 +250,9 @@ export const getDiscussionMembers = async (req, res) => {
             });
         }
 
-        res.json({
-            users: users,
-            count: usersCount
-        });
+        io.emit('dataUpdated', { users, count: usersCount });
+
+        res.json({ users, count: usersCount });
 
     } catch (error) {
         console.error(`Error getting discussion members: ${error.message}`);
