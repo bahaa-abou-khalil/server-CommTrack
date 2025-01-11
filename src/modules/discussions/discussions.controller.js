@@ -249,8 +249,6 @@ export const getDiscussionMembers = async (req, res) => {
             });
         }
 
-        io.emit('dataUpdated', { users, count: usersCount });
-
         res.json({ users, count: usersCount });
 
     } catch (error) {
