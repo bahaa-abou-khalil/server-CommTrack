@@ -1,6 +1,6 @@
 import { User } from "../../db/models/user.model.js";
 import { Discussion } from "../../db/models/discussion.model.js";
-
+import { io } from "../../index.js";
 export const trackStoreJoin = async (req, res) => {
     try {
         const { event } = req.body;
@@ -21,6 +21,8 @@ export const trackStoreJoin = async (req, res) => {
 
             discussion.joinedUsers.push(user._id);
             await discussion.save();
+
+            io.emit('usersUpdated', discussion);
 
             return res.status(200).send("Member join tracked.");
         }
