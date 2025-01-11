@@ -35,7 +35,8 @@ export const io = new Server(httpServer, {
 });
 
 io.on('connection', (socket) => {
-  console.log('frontend connected');  
+  console.log('frontend connection');
+    
   socket.on('disconnect', () => {
     console.log('frontend disconnected');
   });

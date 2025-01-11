@@ -22,7 +22,11 @@ export const trackStoreJoin = async (req, res) => {
             discussion.joinedUsers.push(user._id);
             await discussion.save();
 
-            io.emit('usersUpdated', discussion);
+            const discussions = await Discussion.find().populate({
+                path: "createdBy",
+                select: "profilePicture fullName",
+            })
+            io.emit('usersUpdated', discussions);
 
             return res.status(200).send("Member join tracked.");
         }
