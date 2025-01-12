@@ -26,7 +26,10 @@ export const trackStoreJoin = async (req, res) => {
                 path: "createdBy",
                 select: "profilePicture fullName",
             })
-            io.emit('usersUpdated', discussions);
+
+
+
+            io.emit('usersUpdated', channelId);
 
             return res.status(200).send("Member join tracked.");
         }

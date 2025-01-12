@@ -9,10 +9,14 @@ import { io } from "../../index.js";
 export const getDiscussions = async (req,res) => {
     try{
 
-        const discussions = await Discussion.find().populate({
-            path: "createdBy",
-            select: "profilePicture fullName",
-        })
+        const discussions = await Discussion.find()
+            .populate({
+                path: "createdBy",
+                select: "profilePicture fullName",
+            }).populate({
+                path: "joinedUsers",
+                select: "profilePicture fullName",
+            });
 
         res.json({
             discussions : discussions
