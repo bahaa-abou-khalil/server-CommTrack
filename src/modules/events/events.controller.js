@@ -29,7 +29,7 @@ export const trackStoreJoin = async (req, res) => {
 
 
 
-            io.emit('usersUpdated', channelId);
+            io.emit('usersUpdated', discussions);
 
             return res.status(200).send("Member join tracked.");
         }
