@@ -14,7 +14,7 @@ export const getDiscussions = async (req,res) => {
                 path: "createdBy",
                 select: "profilePicture fullName",
             }).populate({
-                path: "joinedUsers",
+                path: "joinedUsers.user",
                 select: "profilePicture fullName",
             });
 
