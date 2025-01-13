@@ -1,6 +1,8 @@
 import { slackClient } from "../../index.js";
 import schedule from 'node-schedule';
-import { analyzeMessages } from "../openAI/openAI.service.js";
+import { analyzeMessages ,
+    rateMessages
+} from "../openAI/openAI.service.js";
 import { storeUsersAlerts } from "../alerts/alerts.service.js";
 import { getMessages } from "../messages/messages.service.js";
 import { Discussion } from "../../db/models/discussion.model.js";
@@ -28,25 +30,6 @@ const archiveDiscussion = async (channelId) =>{
         console.log(`Channel ${channelId} has been archived.`);
     } catch (archiveError) {
         console.error(`Failed to archive channel: ${archiveError.message}`);
-    }
-}
-
-
-export const scheduleDiscussionActions = async (minutes, channelId) => {
-
-    let endTime = null
-    if (minutes) {
-        endTime = new Date();
-        endTime.setTime(endTime.getTime() + (minutes * 60 * 1000));
-    }
-
-    if (endTime) {
-        schedule.scheduleJob(endTime, async () => {
-            const messageResponse = await getMessages(channelId);
-            const alertsResponse = await analyzeMessages(messageResponse.messages);
-            await storeUsersAlerts(alertsResponse);
-            await archiveDiscussion(channelId);
-        });
     }
 }
 
@@ -89,6 +72,30 @@ export const storeMessagesRate = async (data, channelId) => {
         console.error(`Error occurred: ${error.message}`);
     }
 };
+
+export const scheduleDiscussionActions = async (minutes, channelId) => {
+
+    let endTime = null
+    if (minutes) {
+        endTime = new Date();
+        endTime.setTime(endTime.getTime() + (minutes * 60 * 1000));
+    }
+
+    if (endTime) {
+        schedule.scheduleJob(endTime, async () => {
+            const messageResponse = await getMessages(channelId);
+            const alertsResponse = await analyzeMessages(messageResponse.messages);
+            const rateResponse = await rateMessages(messageResponse.messages);
+            await storeMessagesRate(rateResponse,channelId)
+            await storeUsersAlerts(alertsResponse);
+            await archiveDiscussion(channelId);
+        });
+    }
+}
+
+
+
+
 
 
 
