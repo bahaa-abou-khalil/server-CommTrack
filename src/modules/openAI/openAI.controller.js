@@ -68,9 +68,14 @@ export const analyzeMessages = async (req, res) => {
                         required: ["alert_type", "alert_title", "alert_description","improvement_tips"],
                         additionalProperties: false
                       }
+                    },
+                    messages_quality: {
+                      type: "string",
+                      description: "Representing the quality of the messages as a percentage (e.g., '50%'). This indicates how well the message meets criteria such as clarity, relevance, grammar, and tone, with 100% being the highest quality.",
+                      example: "55%"
                     }
                   },
-                  required: ["user_id", "alerts"],
+                  required: ["user_id", "alerts", "messages_quality"],
                   additionalProperties: false
                 }
               }
