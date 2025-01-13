@@ -114,60 +114,6 @@ export const analyzeMessages = async (messages) => {
   }
 };
 
-const data = [
-      {
-          "user": "U085WU4G7JM",
-          "text": "im going to sleep",
-          "timestamp": "1736378430.590329"
-      },
-      {
-          "user": "U085WU4G7JM",
-          "text": "hahahahaha",
-          "timestamp": "1736378414.058979"
-      },
-      {
-          "user": "U085WU4G7JM",
-          "text": "and you should all work for me",
-          "timestamp": "1736378409.168729"
-      },
-      {
-          "user": "U085WU4G7JM",
-          "text": "i dont need to work",
-          "timestamp": "1736378404.226489"
-      },
-      {
-          "user": "U085WU4G7JM",
-          "text": "all should follow my rule",
-          "timestamp": "1736378398.690899"
-      },
-      {
-          "user": "U085WU4G7JM",
-          "text": "im the boss here",
-          "timestamp": "1736378390.964939"
-      },
-      {
-          "user": "U085WU4G7JM",
-          "text": "but let me tell you something",
-          "timestamp": "1736378386.997159"
-      },
-      {
-          "user": "U085WU4G7JM",
-          "text": "im really happy to see you all",
-          "timestamp": "1736378378.784829"
-      },
-      {
-          "user": "U085WU4G7JM",
-          "text": "im so excited to work with you",
-          "timestamp": "1736378360.380379"
-      },
-      {
-          "user": "U085WU4G7JM",
-          "text": "Hello team",
-          "timestamp": "1736378353.823269"
-      }
-];
-
-
 export const rateMessages = async (messages) => {
 
   try {
@@ -185,7 +131,7 @@ export const rateMessages = async (messages) => {
       model: "gpt-4o-2024-08-06",
       messages: [
           { role: "system", content: "You are an expert in analyzing structured data to structured output, replying with a percentage rank for messages."  },
-          { role: "user", content: "Determine the messages quality of each user. This indicates how well the message meets criteria such as clarity, relevance, grammar, time-reply, and tone, with 100% being the highest quality." },
+          { role: "user", content: "Determine the messages quality of each user. This indicates how well the message meets criteria such as clarity, and behaviour." },
           { role: "user", content: JSON.stringify(transformedMessages) },
           { role: "user", content: "Group all result by the user_id field in the input data. Each user in the output should have a 'user_id' field and a 'message_quality' field percentage rate of messages for that user." },
       ],
@@ -206,7 +152,7 @@ export const rateMessages = async (messages) => {
                     },
                     messages_quality: {
                       type: "string",
-                      description: "This indicates how well the message meets criteria such as clarity, relevance, grammar, time-reply, and tone, with 100% being the highest quality.",
+                      description: "This indicates how well all the messages for that user meets criteria such as clarity, and behaviour.",
                       example: "55%"
                     }
                   },
