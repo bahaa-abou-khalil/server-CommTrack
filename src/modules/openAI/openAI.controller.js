@@ -1,6 +1,4 @@
 import { openai } from "../../index.js";
-import { zodResponseFormat } from "openai/helpers/zod";
-import { z } from "zod";
 
 export const analyzeMessages = async (req, res) => {
   const { messages } = req.body;
@@ -95,6 +93,74 @@ export const analyzeMessages = async (req, res) => {
     })
 
     
+  
+  } catch (error) {
+    console.error("Error analyzing messages:", error);
+    res.status(500).json({ error: "Failed to analyze messages" });
+  }
+};
+
+export const rateMessages = async (req, res) => {
+  const { messages } = req.body;
+
+  try {
+    if (!messages || !Array.isArray(messages)) {
+      return res.status(400).json({ error: "Invalid input. Expecting an array of messages." });
+    }
+    const transformedMessages = messages.map((msg) => ({
+      user_id: msg.user,
+      message: msg.text,
+      timestamp: msg.timestamp,
+    }));
+
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-2024-08-06",
+      messages: [
+          { role: "system", content: "You are an expert in analyzing structured data to structured output, replying with a percentage rank for messages."  },
+          { role: "user", content: "Determine the messages quality of each user. This indicates how well the message meets criteria such as clarity, relevance, grammar, time-reply, and tone, with 100% being the highest quality." },
+          { role: "user", content: JSON.stringify(transformedMessages) },
+          { role: "user", content: "Group all result by the user_id field in the input data. Each user in the output should have a 'user_id' field and a 'message_quality' field percentage rate of messages for that user." },
+      ],
+      response_format: {
+        type: "json_schema",
+        json_schema: {
+          name: "quality_response",
+          schema: {
+            type: "object",
+            properties: {
+              users: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    user_id: {
+                      type: "string"
+                    },
+                    messages_quality: {
+                      type: "string",
+                      description: "This indicates how well the message meets criteria such as clarity, relevance, grammar, time-reply, and tone, with 100% being the highest quality.",
+                      example: "55%"
+                    }
+                  },
+                  required: ["user_id", "messages_quality"],
+                  additionalProperties: false
+                }
+              }
+            },
+            required: ["users"],
+            additionalProperties: false
+          },
+          strict: true
+        }
+      }
+    });
+    
+    const result = response.choices[0].message.content;
+    
+    res.json({
+      result
+    })
   
   } catch (error) {
     console.error("Error analyzing messages:", error);
