@@ -19,7 +19,9 @@ export const trackStoreJoin = async (req, res) => {
                 return res.status(500).json({ message: "User not found." });
             }
 
-            discussion.joinedUsers.push({user: user._id})
+            if (!discussion.joinedUsers.some(joinedUser => joinedUser.user.toString() === user._id.toString())) {
+                discussion.joinedUsers.push({ user: user._id });
+            }
             await discussion.save();
 
             const discussions = await Discussion.find().populate({
