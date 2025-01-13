@@ -263,5 +263,33 @@ export const getDiscussionMembers = async (req, res) => {
     }
 }
 
+export const getDiscussionsStats = async () => {
+    try {
+        const totalUsers = await User.countDocuments();
+
+        if (totalUsers === 0) {
+            res.json({ activePercentage: 0, inactivePercentage: 100 });
+        }
+
+        const discussions = await Discussion.find();
+
+        let totalJoinedUsers = 0;
+        discussions.forEach(discussion => {
+            totalJoinedUsers += discussion.joinedUsers.length;
+        });
+
+        const averageJoinedUsers = discussions.length > 0 ? totalJoinedUsers / discussions.length : 0;
+
+        const activePercentage = (averageJoinedUsers / totalUsers) * 100;
+
+        const inactivePercentage = 100 - activePercentage;
+
+        res.status(200).json({ activePercentage, inactivePercentage });
+    } catch (error) {
+        console.error(`error in discussions stats: ${error}`);
+        res.status(500).json({ activePercentage: 0, inactivePercentage: 100 });
+    }
+};
+
 
 

@@ -16,6 +16,6 @@ const router = new AppRouter({
     prefix: "/alerts",
     router: alertsRouter,
     middlewares: [authMiddleware],
-  });
+});
 
 export default router;
