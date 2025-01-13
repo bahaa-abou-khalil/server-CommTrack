@@ -263,7 +263,7 @@ export const getDiscussionMembers = async (req, res) => {
     }
 }
 
-export const getDiscussionsStats = async () => {
+export const getDiscussionsStats = async (req,res) => {
     try {
         const totalUsers = await User.countDocuments();
 
@@ -280,9 +280,9 @@ export const getDiscussionsStats = async () => {
 
         const averageJoinedUsers = discussions.length > 0 ? totalJoinedUsers / discussions.length : 0;
 
-        const activePercentage = (averageJoinedUsers / totalUsers) * 100;
+        const activePercentage = Math.round((averageJoinedUsers / totalUsers) * 100);
 
-        const inactivePercentage = 100 - activePercentage;
+        const inactivePercentage = Math.round(100 - activePercentage);
 
         res.status(200).json({ activePercentage, inactivePercentage });
     } catch (error) {
