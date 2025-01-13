@@ -1,12 +1,14 @@
 import { Router } from "express";
 import { AppRouter } from "../../config/AppRouter.js";
 import {
-    analyzeMessages
+    analyzeMessages,
+    rateMessages
 } from "./openAI.controller.js"
 
 const opeAIRouter = new Router();
 
 opeAIRouter.get("/", analyzeMessages);
+opeAIRouter.get("/rate", rateMessages);
 
 const router = new AppRouter({
     prefix: "/openAI",
