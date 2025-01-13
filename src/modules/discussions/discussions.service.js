@@ -86,19 +86,10 @@ export const scheduleDiscussionActions = async (minutes, channelId) => {
             const messageResponse = await getMessages(channelId);
             const alertsResponse = await analyzeMessages(messageResponse.messages);
             const rateResponse = await rateMessages(messageResponse.messages);
-            await storeMessagesRate(rateResponse,channelId)
+            await storeMessagesRate(rateResponse, channelId)
             await storeUsersAlerts(alertsResponse);
             await archiveDiscussion(channelId);
         });
     }
 }
-
-
-
-
-
-
-
-
-storeMessagesRate(data,'C087Z0DA7U7')
 

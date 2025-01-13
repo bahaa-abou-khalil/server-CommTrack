@@ -45,3 +45,29 @@ export const acknowledgeAlert = async (req, res) => {
         res.status(500).json({ error: "Something went wrong." });
     }
 };
+
+export const getAlertsStats = async (req, res) => {
+    try {
+        const users = await User.find();
+
+        const usersWithAlertCounts = users.map(user => {
+            const alertCounts = user.alerts.reduce((counts, alert) => {
+                if (alert.type === 'behaviour') counts.behaviour++;
+                if (alert.type === 'engagement') counts.engagement++;
+                if (alert.type === 'productivity') counts.productivity++;
+                return counts;
+            }, { behaviour: 0, engagement: 0, productivity: 0 });
+
+            return {
+                name: user.fullName,
+                email: user.email,
+                alerts: alertCounts,
+            };
+        });
+
+        res.status(200).json({alertsStats: usersWithAlertCounts});
+    } catch (error) {
+        console.log(`error in alerts stats: ${error}`)
+        res.status(500).json({ message: 'Error occured' });
+    }
+};
