@@ -4,6 +4,7 @@ import { analyzeMessages } from "../openAI/openAI.service.js";
 import { storeUsersAlerts } from "../alerts/alerts.service.js";
 import { getMessages } from "../messages/messages.service.js";
 import { Discussion } from "../../db/models/discussion.model.js";
+import { User } from "../../db/models/user.model.js";
 
 export const formatTimestamp = (timestamp) =>{
     const date = new Date(timestamp * 1000);
@@ -63,7 +64,14 @@ export const storeMessagesRate = async (data, channelId) => {
             const existingDiscussion = await Discussion.findOne({ channelId: channelId });
 
             if (existingDiscussion) {
-                const joinedUser = existingDiscussion.joinedUsers.find(u => u.user.toString() === user_id);
+
+                const dbUser = await User.findOne({slackUserID:user_id})
+                if(!dbUser){
+                    console.log('user not found in db')
+                    return
+                }
+
+                const joinedUser = existingDiscussion.joinedUsers.find(u => u.user.toString() === dbUser.id.toString());
 
                 if (joinedUser) {
                     joinedUser.messages_rate = messages_quality;
@@ -84,4 +92,6 @@ export const storeMessagesRate = async (data, channelId) => {
 
 
 
+
+storeMessagesRate(data,'C087Z0DA7U7')
 
