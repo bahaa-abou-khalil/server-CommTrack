@@ -13,8 +13,13 @@ export const discussionSchema = new Schema({
     },
     joinedUsers: [
         {
-            type: Schema.Types.ObjectId,
-            ref: "User",
+            user: {
+                type: Schema.Types.ObjectId,
+                ref: "User",
+            },
+            messages_rate: {
+                type: String,
+            },
         },
     ],
     status: {
