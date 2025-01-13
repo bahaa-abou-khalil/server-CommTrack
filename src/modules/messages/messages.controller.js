@@ -33,3 +33,36 @@ export const postMessageToChannel = async (req, res) => {
         res.status(500).json({ message: "Error posting message to Slack" });
     }
   };
+
+export const getMessages = async (req, res) => {
+    try {
+      const channelId = req.params
+      if (!channelId) {
+          return { 
+              message: "Channel ID is required" 
+          };
+      }
+      const response = await slackClient.conversations.history({
+        channel: channelId,
+        limit: 100,
+      });
+  
+      const filteredMessages = response.messages.filter(
+        (msg) => !msg.subtype && msg.user && msg.text && msg.ts
+      );
+  
+      const formattedMessages = filteredMessages.map((msg) => ({
+        user: msg.user,
+        text: msg.text,
+        timestamp: msg.ts,
+      }));
+      res.json( {
+          messages: formattedMessages,
+      });
+    } catch (error) {
+      console.error(`Error fetching messages: ${error.message}`);
+      res.status(500).json( {
+          message: "Error fetching messages", error: error.message 
+      });
+    }
+};
