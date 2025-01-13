@@ -1,5 +1,5 @@
 import { slackClient } from "../../index.js";
-import { getMessages } from "./messages.service.js";
+// import { getMessages } from "./messages.service.js";
 
 export const postMessageToChannel = async (req, res) => {
     const { channelName, message } = req.body;
@@ -36,7 +36,7 @@ export const postMessageToChannel = async (req, res) => {
 
 export const getMessages = async (req, res) => {
     try {
-      const channelId = req.params
+      const channelId = req.params.channelId
       if (!channelId) {
           return { 
               message: "Channel ID is required" 

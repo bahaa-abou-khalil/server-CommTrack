@@ -118,7 +118,7 @@ export const rateMessages = async (req, res) => {
       model: "gpt-4o-2024-08-06",
       messages: [
           { role: "system", content: "You are an expert in analyzing structured data to structured output, replying with a percentage rank for messages."  },
-          { role: "user", content: "Determine the messages quality of each user. This indicates how well the message meets criteria such as clarity, relevance, grammar, time-reply, and tone, with 100% being the highest quality." },
+          { role: "user", content: "Determine the overall messages quality of each user. This indicates how well the message meets criteria such as clarity, and behaviour." },
           { role: "user", content: JSON.stringify(transformedMessages) },
           { role: "user", content: "Group all result by the user_id field in the input data. Each user in the output should have a 'user_id' field and a 'message_quality' field percentage rate of messages for that user." },
       ],
@@ -139,8 +139,7 @@ export const rateMessages = async (req, res) => {
                     },
                     messages_quality: {
                       type: "string",
-                      description: "This indicates how well the message meets criteria such as clarity, relevance, grammar, time-reply, and tone, with 100% being the highest quality.",
-                      example: "55%"
+                      description: "This indicates how well all the messages for that user meets criteria such as clarity, and behaviour."
                     }
                   },
                   required: ["user_id", "messages_quality"],

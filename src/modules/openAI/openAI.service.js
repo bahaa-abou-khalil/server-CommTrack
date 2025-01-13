@@ -114,12 +114,65 @@ export const analyzeMessages = async (messages) => {
   }
 };
 
-export const rateMessages = async (req, res) => {
-  const { messages } = req.body;
+const data = [
+      {
+          "user": "U085WU4G7JM",
+          "text": "im going to sleep",
+          "timestamp": "1736378430.590329"
+      },
+      {
+          "user": "U085WU4G7JM",
+          "text": "hahahahaha",
+          "timestamp": "1736378414.058979"
+      },
+      {
+          "user": "U085WU4G7JM",
+          "text": "and you should all work for me",
+          "timestamp": "1736378409.168729"
+      },
+      {
+          "user": "U085WU4G7JM",
+          "text": "i dont need to work",
+          "timestamp": "1736378404.226489"
+      },
+      {
+          "user": "U085WU4G7JM",
+          "text": "all should follow my rule",
+          "timestamp": "1736378398.690899"
+      },
+      {
+          "user": "U085WU4G7JM",
+          "text": "im the boss here",
+          "timestamp": "1736378390.964939"
+      },
+      {
+          "user": "U085WU4G7JM",
+          "text": "but let me tell you something",
+          "timestamp": "1736378386.997159"
+      },
+      {
+          "user": "U085WU4G7JM",
+          "text": "im really happy to see you all",
+          "timestamp": "1736378378.784829"
+      },
+      {
+          "user": "U085WU4G7JM",
+          "text": "im so excited to work with you",
+          "timestamp": "1736378360.380379"
+      },
+      {
+          "user": "U085WU4G7JM",
+          "text": "Hello team",
+          "timestamp": "1736378353.823269"
+      }
+];
+
+
+export const rateMessages = async (messages) => {
 
   try {
     if (!messages || !Array.isArray(messages)) {
-      return res.status(400).json({ error: "Invalid input. Expecting an array of messages." });
+      return { error: "Invalid input. Expecting an array of messages." };
     }
     const transformedMessages = messages.map((msg) => ({
       user_id: msg.user,
