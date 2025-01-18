@@ -10,6 +10,7 @@ export const getDiscussions = async (req,res) => {
     try{
 
         const discussions = await Discussion.find()
+            .sort({isPinned:-1 , date: -1 })
             .populate({
                 path: "createdBy",
                 select: "profilePicture fullName",
@@ -294,7 +295,7 @@ export const getDiscussionsStats = async (req,res) => {
 export const pinDiscussion = async (req, res) => {
     const { channelId } = req.body;
     try {
-        
+
         const discussion = await Discussion.findOne({ channelId });
         discussion.isPinned = true;
         await discussion.save();
