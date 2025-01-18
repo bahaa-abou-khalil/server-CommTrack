@@ -297,10 +297,10 @@ export const pinDiscussion = async (req, res) => {
     try {
 
         const discussion = await Discussion.findOne({ channelId });
-        discussion.isPinned = true;
+        discussion.isPinned = !discussion.isPinned;
         await discussion.save();
 
-        res.json({ message: 'Discussion pinned successfully' });
+        res.json({ message: 'Pin action done successfully' });
     } catch (error) {
         console.error(`Error pinning discussion: ${error}`);
         res.status(500).json({ message: 'An error occurred.' });
