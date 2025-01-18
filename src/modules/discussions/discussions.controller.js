@@ -292,4 +292,23 @@ export const getDiscussionsStats = async (req,res) => {
 };
 
 
+export const unarchiveChannel = async (req, res) => {
+    try {
+        const { channelId } = req.body;
 
+        if (!channelId) {
+            return res.status(400).json({ error: "Channel ID is required" });
+        }
+
+        const response = await slackClient.conversations.unarchive({ channel: channelId });
+
+        if (!response.ok) {
+            return res.status(400).json({ error: response.error });
+        }
+
+        res.json({ message: "Channel unarchived successfully" });
+    } catch (error) {
+        console.error(`Error unarchiving channel: ${error}`);
+        res.status(500).json({ error: "Something went wrong." });
+    }
+};

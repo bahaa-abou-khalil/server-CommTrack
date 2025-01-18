@@ -13,6 +13,7 @@ export const getLeaderBoard= async (req,res) => {
 
             const discussions = await Discussion.find({ "joinedUsers.user": user.id });
             const totalDiscussions = discussions.length;
+
             usersStats.push({
                 avatar: user.profilePicture,
                 name: user.fullName,
