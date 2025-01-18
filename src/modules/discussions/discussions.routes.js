@@ -7,7 +7,8 @@ import {
     redirectToDiscussion,
     getDiscussions,
     getDiscussionMembers,
-    getDiscussionsStats
+    getDiscussionsStats,
+    pinDiscussion
     } from "./discussions.controller.js";
 
 import { authMiddleware } from "../../middlewares/auth.middleware.js";
@@ -21,6 +22,8 @@ discussionsRouter.get("/status/:channelId", checkDiscussionStatus);
 discussionsRouter.get("/redirect/:channelId", redirectToDiscussion);
 discussionsRouter.get("/stats", getDiscussionsStats);
 discussionsRouter.post("/", createDiscussion);
+
+discussionsRouter.post("/pin", pinDiscussion);
 
 const router = new AppRouter({
     prefix: "/discussions",
