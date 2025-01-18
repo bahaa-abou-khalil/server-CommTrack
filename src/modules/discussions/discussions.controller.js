@@ -5,6 +5,7 @@ import { scheduleDiscussionActions } from "./discussions.service.js";
 import { User } from "../../db/models/user.model.js";
 import { Discussion } from "../../db/models/discussion.model.js";
 import { io } from "../../index.js";
+import { WebClient } from '@slack/web-api';
 
 export const getDiscussions = async (req,res) => {
     try{
@@ -288,27 +289,5 @@ export const getDiscussionsStats = async (req,res) => {
     } catch (error) {
         console.error(`error in discussions stats: ${error}`);
         res.status(500).json({ activePercentage: 0, inactivePercentage: 100 });
-    }
-};
-
-
-export const unarchiveChannel = async (req, res) => {
-    try {
-        const { channelId } = req.body;
-
-        if (!channelId) {
-            return res.status(400).json({ error: "Channel ID is required" });
-        }
-
-        const response = await slackClient.conversations.unarchive({ channel: channelId });
-
-        if (!response.ok) {
-            return res.status(400).json({ error: response.error });
-        }
-
-        res.json({ message: "Channel unarchived successfully" });
-    } catch (error) {
-        console.error(`Error unarchiving channel: ${error}`);
-        res.status(500).json({ error: "Something went wrong." });
     }
 };
