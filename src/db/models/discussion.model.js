@@ -7,6 +7,10 @@ export const discussionSchema = new Schema({
     description: String, 
     timeLimit: Number,
     channelId : String,
+    isPinned : {
+        type: Boolean,
+        default: false
+    },
     createdBy : {
         type: Schema.Types.ObjectId,
         ref: "User",
