@@ -5,7 +5,6 @@ import { scheduleDiscussionActions } from "./discussions.service.js";
 import { User } from "../../db/models/user.model.js";
 import { Discussion } from "../../db/models/discussion.model.js";
 import { io } from "../../index.js";
-import { WebClient } from '@slack/web-api';
 
 export const getDiscussions = async (req,res) => {
     try{
@@ -289,5 +288,20 @@ export const getDiscussionsStats = async (req,res) => {
     } catch (error) {
         console.error(`error in discussions stats: ${error}`);
         res.status(500).json({ activePercentage: 0, inactivePercentage: 100 });
+    }
+};
+
+export const pinDiscussion = async (req, res) => {
+    const { channelId } = req.body;
+    try {
+        
+        const discussion = await Discussion.findOne({ channelId });
+        discussion.isPinned = true;
+        await discussion.save();
+
+        res.json({ message: 'Discussion pinned successfully' });
+    } catch (error) {
+        console.error(`Error pinning discussion: ${error}`);
+        res.status(500).json({ message: 'An error occurred.' });
     }
 };
