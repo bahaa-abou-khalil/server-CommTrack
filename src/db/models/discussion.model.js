@@ -26,11 +26,6 @@ export const discussionSchema = new Schema({
             },
         },
     ],
-    status: {
-        type:String,
-        default: "pending",
-        enum:["active","pending"]
-    },
     date: {
         type:Date,
         default: Date.now
