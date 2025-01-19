@@ -8,7 +8,8 @@ import {
     getDiscussions,
     getDiscussionMembers,
     getDiscussionsStats,
-    pinDiscussion
+    pinDiscussion,
+    toggleChannelPrivacy
     } from "./discussions.controller.js";
 
 import { authMiddleware } from "../../middlewares/auth.middleware.js";
@@ -22,6 +23,7 @@ discussionsRouter.get("/status/:channelId", checkDiscussionStatus);
 discussionsRouter.get("/redirect/:channelId", redirectToDiscussion);
 discussionsRouter.get("/stats", getDiscussionsStats);
 discussionsRouter.post("/", createDiscussion);
+discussionsRouter.post("/privacy", toggleChannelPrivacy);
 
 discussionsRouter.post("/pin", pinDiscussion);
 

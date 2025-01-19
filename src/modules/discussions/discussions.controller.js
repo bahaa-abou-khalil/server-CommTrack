@@ -306,3 +306,48 @@ export const pinDiscussion = async (req, res) => {
         res.status(500).json({ message: 'An error occurred.' });
     }
 };
+
+export const toggleChannelPrivacy = async (req, res) => {
+    const { channelId } = req.body;
+
+    try {
+        const channelInfo = await slackClient.conversations.info({
+            channel: channelId,
+        });
+
+        if (!channelInfo.ok) {
+            return res.status(400).json({
+                message: "Failed to retrieve channel information.",
+            });
+        }
+
+        const isPrivate = channelInfo.channel.is_private;
+
+        if (isPrivate) {
+            const response = await slackClient.conversations.setPublic({
+                channel: channelId,
+            });
+
+            if (!response.ok) {
+                res.status(500).json({
+                    message: "Failed to convert channel to public."})
+            } 
+
+        } else {
+            const response = await slackClient.conversations.setPrivate({
+                channel: channelId,
+            });
+
+            if (!response.ok) {
+                res.status(500).json({
+                message: "Failed to convert channel to private."})        
+            } 
+
+        }
+    } catch (error) {
+        console.error("Error toggling channel privacy:", error);
+        res.status(500).json({
+            message: "An error occurred while toggling channel privacy."
+    });
+    }
+};

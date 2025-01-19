@@ -81,3 +81,19 @@ export const signInCallback = async (req, res) => {
       res.status(500).send('Error during Slack sign in.');
     }
 };
+
+export const getUserType = async (req,res) => {
+    const id = req.user.id;
+    try{
+        const user = await User.findById(id);
+
+        res.json({
+            userType:user.role
+        })
+
+    }catch(error){
+        res.json({
+            error: error
+        })
+    }
+}

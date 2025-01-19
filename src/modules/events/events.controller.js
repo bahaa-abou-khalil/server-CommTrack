@@ -1,6 +1,8 @@
 import { User } from "../../db/models/user.model.js";
 import { Discussion } from "../../db/models/discussion.model.js";
 import { io } from "../../index.js";
+import { slackClient } from "../../index.js";
+
 export const trackStoreJoin = async (req, res) => {
     try {
         const { event } = req.body;
@@ -53,3 +55,47 @@ export const slackEvents = (req, res) => {
   
     res.status(200).send('Event received');
 }
+
+export const feedbackForm = async (req, res) => {
+    const payload = req.body.payload ? JSON.parse(req.body.payload) : null;
+
+    if (!payload) {
+        console.log('invalid payload')
+        res.status(400).send('Invalid payload');
+        return;
+    }
+  
+    try {
+      if (payload.type === 'block_actions') {
+        const action = payload.actions[0];
+        const user = payload.user.id;
+  
+        console.log(`User ${user} clicked:`, action.value);
+  
+        if (action.value === 'question_1') {
+          await slackClient.chat.postEphemeral({
+            channel: payload.channel.id,
+            user,
+            text: 'Please provide your answer to Question 1:',
+          });
+        } else if (action.value === 'question_2') {
+          await slackClient.chat.postEphemeral({
+            channel: payload.channel.id,
+            user,
+            text: 'Please provide your answer to Question 2:',
+          });
+        } else if (action.value === 'question_3') {
+          await slackClient.chat.postEphemeral({
+            channel: payload.channel.id,
+            user,
+            text: 'Please provide your answer to Question 3:',
+          });
+        }
+  
+        res.sendStatus(200);
+      }
+    } catch (error) {
+      console.error(`Error handling interaction: ${error}`);
+      res.sendStatus(500);
+    }
+  };

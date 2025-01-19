@@ -35,77 +35,77 @@ export const postMessageToChannel = async (req, res) => {
 };
 
 export const postDiscussionFeedbackForm = async (req, res) => {
-  const { channelId } = req.body;
-
-  try {
+    const { channelId } = req.body;
+  
+    try {
       const message = {
-          channel: channelId,
-          text: `Feedback Form for Discussion`,
-          blocks: [
-              {
-                  type: 'section',
-                  block_id: 'feedback_form',
-                  text: {
-                      type: 'mrkdwn',
-                      text: `*Please provide feedback for discussion:*`
-                  },
-                  accessory: {
-                      type: 'button',
-                      text: {
-                          type: 'plain_text',
-                          text: 'Answer Question 1'
-                      },
-                      value: 'question_1',
-                  }
+        channel: channelId,
+        text: `Feedback Form for Discussion`,
+        blocks: [
+          {
+            type: 'section',
+            block_id: 'feedback_form',
+            text: {
+              type: 'mrkdwn',
+              text: `*Please provide feedback for discussion:*`,
+            },
+            accessory: {
+              type: 'button',
+              text: {
+                type: 'plain_text',
+                text: 'Answer Question 1',
               },
-              {
-                  type: 'section',
-                  block_id: 'question_2',
-                  text: {
-                      type: 'mrkdwn',
-                      text: 'What did you like about this discussion?'
-                  },
-                  accessory: {
-                      type: 'button',
-                      text: {
-                          type: 'plain_text',
-                          text: 'Answer Question 2'
-                      },
-                      value: 'question_2',
-                  }
+              value: 'question_1',
+            },
+          },
+          {
+            type: 'section',
+            block_id: 'question_2',
+            text: {
+              type: 'mrkdwn',
+              text: 'What did you like about this discussion?',
+            },
+            accessory: {
+              type: 'button',
+              text: {
+                type: 'plain_text',
+                text: 'Answer Question 2',
               },
-              {
-                  type: 'section',
-                  block_id: 'question_3',
-                  text: {
-                      type: 'mrkdwn',
-                      text: 'Do you have any suggestions for improvement?'
-                  },
-                  accessory: {
-                      type: 'button',
-                      text: {
-                          type: 'plain_text',
-                          text: 'Answer Question 3'
-                      },
-                      value: 'question_3',
-                  }
-              }
-          ]
+              value: 'question_2',
+            },
+          },
+          {
+            type: 'section',
+            block_id: 'question_3',
+            text: {
+              type: 'mrkdwn',
+              text: 'Do you have any suggestions for improvement?',
+            },
+            accessory: {
+              type: 'button',
+              text: {
+                type: 'plain_text',
+                text: 'Answer Question 3',
+              },
+              value: 'question_3',
+            },
+          },
+        ],
       };
-
+  
       const response = await slackClient.chat.postMessage(message);
-
+  
       res.json({
-          message: 'Feedback form sent successfully to Slack channel.',
-          data: response,
+        message: 'Feedback form sent successfully to Slack channel.',
+        data: response,
       });
-  } catch (error) {
+    } catch (error) {
       console.log(`Error posting feedback form: ${error}`);
       res.status(500).json({
-          message: 'Something went wrong while sending the feedback form.',
+        message: 'Something went wrong while sending the feedback form.',
       });
-  }
-}
+    }
+};
 
 export const getMessages = async (req, res) => {
     try {
