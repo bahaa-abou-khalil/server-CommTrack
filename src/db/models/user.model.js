@@ -26,23 +26,9 @@ const userSchema = new Schema({
             type: String,
             unique : true
         },
-        password: {
-            type:String
-        }, 
-        googleID: {
-            type:String 
-        },
-        tokens: {
-            accessToken: {
-                type: String,
-            }
-        },
         role: {
             type:String,
             enum:["admin", "leader", "member"]
-        }, 
-        slackWorkspace: {
-            type: String
         }, 
         alerts: [alertSchema],
 
