@@ -96,3 +96,19 @@ export const getActiveUser = async (req, res) => {
         return res.status(500).json({ message: "Failed to get user." });
     }
 };
+
+export const getUserType = async (req,res) => {
+    const id = req.user.id;
+    try{
+        const user = await User.findById(id);
+
+        res.json({
+            userType:user.role
+        })
+
+    }catch(error){
+        res.json({
+            error: error
+        })
+    }
+}

@@ -3,14 +3,12 @@ import { AppRouter } from "../../config/AppRouter.js";
 import {
     signInWithSlack,
     signInCallback,
-    getUserType
     } from "./auth.controller.js"
 
 const authRouter = new Router();
 
 authRouter.get("/", signInWithSlack);
 authRouter.get("/welcome", signInCallback);
-authRouter.get("/userType", getUserType);
 
 const router = new AppRouter({
     prefix: "/slackAuth",

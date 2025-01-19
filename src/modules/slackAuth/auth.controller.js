@@ -82,18 +82,4 @@ export const signInCallback = async (req, res) => {
     }
 };
 
-export const getUserType = async (req,res) => {
-    const id = req.user.id;
-    try{
-        const user = await User.findById(id);
 
-        res.json({
-            userType:user.role
-        })
-
-    }catch(error){
-        res.json({
-            error: error
-        })
-    }
-}

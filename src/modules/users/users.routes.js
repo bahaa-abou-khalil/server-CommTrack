@@ -4,7 +4,8 @@ import {
     createUser,
     getUsers,
     getSlackUsersByIds,
-    getActiveUser
+    getActiveUser,
+    getUserType
     } from "./users.controller.js"
 import { adminMiddleware } from "../../middlewares/admin.middleware.js";
 import { authMiddleware } from "../../middlewares/auth.middleware.js";
@@ -13,9 +14,12 @@ const usersRouter = new Router();
 
 
 usersRouter.get("/active", getActiveUser);
+usersRouter.get("/userType", getUserType);
 usersRouter.get("/:id?", getUsers);
 usersRouter.post("/",createUser);
 usersRouter.post("/slackUsers",getSlackUsersByIds);
+
+
 
 const router = new AppRouter({
     prefix: "/users",
