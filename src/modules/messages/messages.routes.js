@@ -3,7 +3,7 @@ import { AppRouter } from "../../config/AppRouter.js";
 import {
     postMessageToChannel,
     getMessages
-    } from "./messages.controller.js"
+      } from "./messages.controller.js"
 import { authMiddleware } from "../../middlewares/auth.middleware.js";
 
 const messagesRouter = new Router();
